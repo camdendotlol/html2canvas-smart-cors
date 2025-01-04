@@ -103,11 +103,11 @@ export class Cache {
             img.onload = () => resolve(img);
             img.onerror = async () => {
                 // try to run it through a cors proxy
-                await this.proxy(src)
+                img.src = await this.proxy(src);
 
                 // ...then reject if it still doesn't work
-                img.onerror = reject
-            }
+                img.onerror = reject;
+            };
             //ios safari 10.3 taints canvas with data urls unless crossOrigin is set to anonymous
             if (isInlineImage(src) || isInlineBase64Image(src) || useCORS) {
                 img.crossOrigin = 'anonymous';

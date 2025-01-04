@@ -127,16 +127,16 @@ var Cache = /** @class */ (function () {
                                 var img = new Image();
                                 img.onload = function () { return resolve(img); };
                                 img.onerror = function () { return __awaiter(_this, void 0, void 0, function () {
-                                    return __generator(this, function (_a) {
-                                        switch (_a.label) {
-                                            case 0: 
-                                            // try to run it through a cors proxy
-                                            return [4 /*yield*/, this.proxy(src)
-                                                // ...then reject if it still doesn't work
-                                            ];
+                                    var _a;
+                                    return __generator(this, function (_b) {
+                                        switch (_b.label) {
+                                            case 0:
+                                                // try to run it through a cors proxy
+                                                _a = img;
+                                                return [4 /*yield*/, this.proxy(src)];
                                             case 1:
                                                 // try to run it through a cors proxy
-                                                _a.sent();
+                                                _a.src = _b.sent();
                                                 // ...then reject if it still doesn't work
                                                 img.onerror = reject;
                                                 return [2 /*return*/];
