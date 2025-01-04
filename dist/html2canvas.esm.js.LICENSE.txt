@@ -1,0 +1,7 @@
+/*!
+ * /*!
+ *  * html2canvas 1.6.3 <undefined>
+ *  * Copyright (c) 2025 Niklas von Hertzen <https://hertzen.com>
+ *  * Released under MIT License
+ *  * /
+ */
