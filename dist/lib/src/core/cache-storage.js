@@ -151,7 +151,7 @@ var Cache = /** @class */ (function () {
                                     // in chrome if the image loaded before without crossorigin it will be cached and used later even if the next usage has crossorigin
                                     // it will fail with CORS error, add a random query parameter just to prevent the chrome from using the cached image
                                     // see more info about the chrome issue in this link: https://stackoverflow.com/a/49503414
-                                    src = src + (src.includes('?') ? '&' : '?') + "cors=".concat(Math.random());
+                                    src = src + (src.includes('?') ? '&' : '?') + "asdf=".concat(Math.random());
                                 }
                                 img.src = src;
                                 if (/^data:/.test(src)) {
