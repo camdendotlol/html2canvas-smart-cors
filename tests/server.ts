@@ -2,8 +2,9 @@ import cors from 'cors';
 import express from 'express';
 import filenamifyUrl from 'filenamify-url';
 import fs from 'fs';
+// @ts-ignore
 import proxy from 'html2canvas-proxy';
-import mkdirp from 'mkdirp';
+import {mkdirp} from 'mkdirp';
 import path from 'path';
 import serveIndex from 'serve-index';
 import yargs from 'yargs';
