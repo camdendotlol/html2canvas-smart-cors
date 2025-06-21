@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.position = void 0;
-exports.position = {
+export const position = {
     name: 'position',
     initialValue: 'static',
     prefix: false,
     type: 2 /* PropertyDescriptorParsingType.IDENT_VALUE */,
-    parse: function (_context, position) {
+    parse: (_context, position) => {
         switch (position) {
             case 'relative':
                 return 1 /* POSITION.RELATIVE */;

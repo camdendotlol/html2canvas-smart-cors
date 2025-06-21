@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.parsePathForBorderStroke = exports.parsePathForBorderDoubleInner = exports.parsePathForBorderDoubleOuter = exports.parsePathForBorder = void 0;
-var bezier_curve_1 = require("./bezier-curve");
-var parsePathForBorder = function (curves, borderSide) {
+import { isBezierCurve } from './bezier-curve';
+export const parsePathForBorder = (curves, borderSide) => {
     switch (borderSide) {
         case 0:
             return createPathFromCurves(curves.topLeftBorderBox, curves.topLeftPaddingBox, curves.topRightBorderBox, curves.topRightPaddingBox);
@@ -15,8 +12,7 @@ var parsePathForBorder = function (curves, borderSide) {
             return createPathFromCurves(curves.bottomLeftBorderBox, curves.bottomLeftPaddingBox, curves.topLeftBorderBox, curves.topLeftPaddingBox);
     }
 };
-exports.parsePathForBorder = parsePathForBorder;
-var parsePathForBorderDoubleOuter = function (curves, borderSide) {
+export const parsePathForBorderDoubleOuter = (curves, borderSide) => {
     switch (borderSide) {
         case 0:
             return createPathFromCurves(curves.topLeftBorderBox, curves.topLeftBorderDoubleOuterBox, curves.topRightBorderBox, curves.topRightBorderDoubleOuterBox);
@@ -29,8 +25,7 @@ var parsePathForBorderDoubleOuter = function (curves, borderSide) {
             return createPathFromCurves(curves.bottomLeftBorderBox, curves.bottomLeftBorderDoubleOuterBox, curves.topLeftBorderBox, curves.topLeftBorderDoubleOuterBox);
     }
 };
-exports.parsePathForBorderDoubleOuter = parsePathForBorderDoubleOuter;
-var parsePathForBorderDoubleInner = function (curves, borderSide) {
+export const parsePathForBorderDoubleInner = (curves, borderSide) => {
     switch (borderSide) {
         case 0:
             return createPathFromCurves(curves.topLeftBorderDoubleInnerBox, curves.topLeftPaddingBox, curves.topRightBorderDoubleInnerBox, curves.topRightPaddingBox);
@@ -43,8 +38,7 @@ var parsePathForBorderDoubleInner = function (curves, borderSide) {
             return createPathFromCurves(curves.bottomLeftBorderDoubleInnerBox, curves.bottomLeftPaddingBox, curves.topLeftBorderDoubleInnerBox, curves.topLeftPaddingBox);
     }
 };
-exports.parsePathForBorderDoubleInner = parsePathForBorderDoubleInner;
-var parsePathForBorderStroke = function (curves, borderSide) {
+export const parsePathForBorderStroke = (curves, borderSide) => {
     switch (borderSide) {
         case 0:
             return createStrokePathFromCurves(curves.topLeftBorderStroke, curves.topRightBorderStroke);
@@ -57,16 +51,15 @@ var parsePathForBorderStroke = function (curves, borderSide) {
             return createStrokePathFromCurves(curves.bottomLeftBorderStroke, curves.topLeftBorderStroke);
     }
 };
-exports.parsePathForBorderStroke = parsePathForBorderStroke;
-var createStrokePathFromCurves = function (outer1, outer2) {
-    var path = [];
-    if ((0, bezier_curve_1.isBezierCurve)(outer1)) {
+const createStrokePathFromCurves = (outer1, outer2) => {
+    const path = [];
+    if (isBezierCurve(outer1)) {
         path.push(outer1.subdivide(0.5, false));
     }
     else {
         path.push(outer1);
     }
-    if ((0, bezier_curve_1.isBezierCurve)(outer2)) {
+    if (isBezierCurve(outer2)) {
         path.push(outer2.subdivide(0.5, true));
     }
     else {
@@ -74,27 +67,27 @@ var createStrokePathFromCurves = function (outer1, outer2) {
     }
     return path;
 };
-var createPathFromCurves = function (outer1, inner1, outer2, inner2) {
-    var path = [];
-    if ((0, bezier_curve_1.isBezierCurve)(outer1)) {
+const createPathFromCurves = (outer1, inner1, outer2, inner2) => {
+    const path = [];
+    if (isBezierCurve(outer1)) {
         path.push(outer1.subdivide(0.5, false));
     }
     else {
         path.push(outer1);
     }
-    if ((0, bezier_curve_1.isBezierCurve)(outer2)) {
+    if (isBezierCurve(outer2)) {
         path.push(outer2.subdivide(0.5, true));
     }
     else {
         path.push(outer2);
     }
-    if ((0, bezier_curve_1.isBezierCurve)(inner2)) {
+    if (isBezierCurve(inner2)) {
         path.push(inner2.subdivide(0.5, true).reverse());
     }
     else {
         path.push(inner2);
     }
-    if ((0, bezier_curve_1.isBezierCurve)(inner1)) {
+    if (isBezierCurve(inner1)) {
         path.push(inner1.subdivide(0.5, false).reverse());
     }
     else {

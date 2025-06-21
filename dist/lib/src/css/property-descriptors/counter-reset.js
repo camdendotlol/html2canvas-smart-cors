@@ -1,24 +1,21 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.counterReset = void 0;
-var parser_1 = require("../syntax/parser");
-exports.counterReset = {
+import { isIdentToken, isNumberToken, nonWhiteSpace } from '../syntax/parser';
+export const counterReset = {
     name: 'counter-reset',
     initialValue: 'none',
     prefix: true,
     type: 1 /* PropertyDescriptorParsingType.LIST */,
-    parse: function (_context, tokens) {
+    parse: (_context, tokens) => {
         if (tokens.length === 0) {
             return [];
         }
-        var resets = [];
-        var filtered = tokens.filter(parser_1.nonWhiteSpace);
-        for (var i = 0; i < filtered.length; i++) {
-            var counter = filtered[i];
-            var next = filtered[i + 1];
-            if ((0, parser_1.isIdentToken)(counter) && counter.value !== 'none') {
-                var reset = next && (0, parser_1.isNumberToken)(next) ? next.number : 0;
-                resets.push({ counter: counter.value, reset: reset });
+        const resets = [];
+        const filtered = tokens.filter(nonWhiteSpace);
+        for (let i = 0; i < filtered.length; i++) {
+            const counter = filtered[i];
+            const next = filtered[i + 1];
+            if (isIdentToken(counter) && counter.value !== 'none') {
+                const reset = next && isNumberToken(next) ? next.number : 0;
+                resets.push({ counter: counter.value, reset });
             }
         }
         return resets;

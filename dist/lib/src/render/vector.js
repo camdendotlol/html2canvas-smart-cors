@@ -1,22 +1,19 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isVector = exports.Vector = void 0;
-var path_1 = require("./path");
-var Vector = /** @class */ (function () {
-    function Vector(x, y) {
-        this.type = path_1.PathType.VECTOR;
+import { PathType } from './path';
+export class Vector {
+    type;
+    x;
+    y;
+    constructor(x, y) {
+        this.type = PathType.VECTOR;
         this.x = x;
         this.y = y;
     }
-    Vector.prototype.add = function (deltaX, deltaY) {
+    add(deltaX, deltaY) {
         return new Vector(this.x + deltaX, this.y + deltaY);
-    };
-    Vector.prototype.reverse = function () {
+    }
+    reverse() {
         return this;
-    };
-    return Vector;
-}());
-exports.Vector = Vector;
-var isVector = function (path) { return path.type === path_1.PathType.VECTOR; };
-exports.isVector = isVector;
+    }
+}
+export const isVector = (path) => path.type === PathType.VECTOR;
 //# sourceMappingURL=vector.js.map

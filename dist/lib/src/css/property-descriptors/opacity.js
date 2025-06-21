@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.opacity = void 0;
-var parser_1 = require("../syntax/parser");
-exports.opacity = {
+import { isNumberToken } from '../syntax/parser';
+export const opacity = {
     name: 'opacity',
     initialValue: '1',
     type: 0 /* PropertyDescriptorParsingType.VALUE */,
     prefix: false,
-    parse: function (_context, token) {
-        if ((0, parser_1.isNumberToken)(token)) {
+    parse: (_context, token) => {
+        if (isNumberToken(token)) {
             return token.number;
         }
         return 1;

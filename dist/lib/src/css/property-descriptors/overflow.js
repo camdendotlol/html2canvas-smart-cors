@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.overflow = void 0;
-var parser_1 = require("../syntax/parser");
-exports.overflow = {
+import { isIdentToken } from '../syntax/parser';
+export const overflow = {
     name: 'overflow',
     initialValue: 'visible',
     prefix: false,
     type: 1 /* PropertyDescriptorParsingType.LIST */,
-    parse: function (_context, tokens) {
-        return tokens.filter(parser_1.isIdentToken).map(function (overflow) {
+    parse: (_context, tokens) => {
+        return tokens.filter(isIdentToken).map((overflow) => {
             switch (overflow.value) {
                 case 'hidden':
                     return 1 /* OVERFLOW.HIDDEN */;

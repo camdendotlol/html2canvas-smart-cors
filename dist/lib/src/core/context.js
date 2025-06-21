@@ -1,18 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Context = void 0;
-var logger_1 = require("./logger");
-var cache_storage_1 = require("./cache-storage");
-var Context = /** @class */ (function () {
-    function Context(options, windowBounds) {
-        var _a;
+import { Logger } from './logger';
+import { Cache } from './cache-storage';
+export class Context {
+    windowBounds;
+    static instanceCount = 1;
+    instanceName = `#${Context.instanceCount++}`;
+    logger;
+    cache;
+    constructor(options, windowBounds) {
         this.windowBounds = windowBounds;
-        this.instanceName = "#".concat(Context.instanceCount++);
-        this.logger = new logger_1.Logger({ id: this.instanceName, enabled: options.logging });
-        this.cache = (_a = options.cache) !== null && _a !== void 0 ? _a : new cache_storage_1.Cache(this, options);
+        this.logger = new Logger({ id: this.instanceName, enabled: options.logging });
+        this.cache = options.cache ?? new Cache(this, options);
     }
-    Context.instanceCount = 1;
-    return Context;
-}());
-exports.Context = Context;
+}
 //# sourceMappingURL=context.js.map

@@ -6,5 +6,5 @@
         "declaration": false,
         "declarationDir": null
     },
-    "include": ["**/*.ts"]
+    "include": ["**/*.ts", "webpack.config.js"]
 }

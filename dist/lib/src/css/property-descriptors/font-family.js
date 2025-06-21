@@ -1,15 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.fontFamily = void 0;
-exports.fontFamily = {
-    name: "font-family",
+export const fontFamily = {
+    name: `font-family`,
     initialValue: '',
     prefix: false,
     type: 1 /* PropertyDescriptorParsingType.LIST */,
-    parse: function (_context, tokens) {
-        var accumulator = [];
-        var results = [];
-        tokens.forEach(function (token) {
+    parse: (_context, tokens) => {
+        const accumulator = [];
+        const results = [];
+        tokens.forEach((token) => {
             switch (token.type) {
                 case 20 /* TokenType.IDENT_TOKEN */:
                 case 0 /* TokenType.STRING_TOKEN */:
@@ -27,7 +24,7 @@ exports.fontFamily = {
         if (accumulator.length) {
             results.push(accumulator.join(' '));
         }
-        return results.map(function (result) { return (result.indexOf(' ') === -1 ? result : "'".concat(result, "'")); });
+        return results.map((result) => (result.indexOf(' ') === -1 ? result : `'${result}'`));
     }
 };
 //# sourceMappingURL=font-family.js.map

@@ -1,30 +1,27 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.textShadow = void 0;
-var parser_1 = require("../syntax/parser");
-var length_percentage_1 = require("../types/length-percentage");
-var color_1 = require("../types/color");
-var length_1 = require("../types/length");
-exports.textShadow = {
+import { isIdentWithValue, parseFunctionArgs } from '../syntax/parser';
+import { ZERO_LENGTH } from '../types/length-percentage';
+import { color, COLORS } from '../types/color';
+import { isLength } from '../types/length';
+export const textShadow = {
     name: 'text-shadow',
     initialValue: 'none',
     type: 1 /* PropertyDescriptorParsingType.LIST */,
     prefix: false,
-    parse: function (context, tokens) {
-        if (tokens.length === 1 && (0, parser_1.isIdentWithValue)(tokens[0], 'none')) {
+    parse: (context, tokens) => {
+        if (tokens.length === 1 && isIdentWithValue(tokens[0], 'none')) {
             return [];
         }
-        return (0, parser_1.parseFunctionArgs)(tokens).map(function (values) {
-            var shadow = {
-                color: color_1.COLORS.TRANSPARENT,
-                offsetX: length_percentage_1.ZERO_LENGTH,
-                offsetY: length_percentage_1.ZERO_LENGTH,
-                blur: length_percentage_1.ZERO_LENGTH
+        return parseFunctionArgs(tokens).map((values) => {
+            const shadow = {
+                color: COLORS.TRANSPARENT,
+                offsetX: ZERO_LENGTH,
+                offsetY: ZERO_LENGTH,
+                blur: ZERO_LENGTH
             };
-            var c = 0;
-            for (var i = 0; i < values.length; i++) {
-                var token = values[i];
-                if ((0, length_1.isLength)(token)) {
+            let c = 0;
+            for (let i = 0; i < values.length; i++) {
+                const token = values[i];
+                if (isLength(token)) {
                     if (c === 0) {
                         shadow.offsetX = token;
                     }
@@ -37,7 +34,7 @@ exports.textShadow = {
                     c++;
                 }
                 else {
-                    shadow.color = color_1.color.parse(context, token);
+                    shadow.color = color.parse(context, token);
                 }
             }
             return shadow;

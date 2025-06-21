@@ -1,36 +1,33 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.prefixRadialGradient = void 0;
-var parser_1 = require("../../syntax/parser");
-var gradient_1 = require("./gradient");
-var length_percentage_1 = require("../length-percentage");
-var length_1 = require("../length");
-var radial_gradient_1 = require("./radial-gradient");
-var prefixRadialGradient = function (context, tokens) {
-    var shape = 0 /* CSSRadialShape.CIRCLE */;
-    var size = 3 /* CSSRadialExtent.FARTHEST_CORNER */;
-    var stops = [];
-    var position = [];
-    (0, parser_1.parseFunctionArgs)(tokens).forEach(function (arg, i) {
-        var isColorStop = true;
+import { isIdentToken, parseFunctionArgs } from '../../syntax/parser';
+import { parseColorStop } from './gradient';
+import { FIFTY_PERCENT, HUNDRED_PERCENT, isLengthPercentage, ZERO_LENGTH } from '../length-percentage';
+import { isLength } from '../length';
+import { CIRCLE, CLOSEST_CORNER, CLOSEST_SIDE, CONTAIN, COVER, ELLIPSE, FARTHEST_CORNER, FARTHEST_SIDE } from './radial-gradient';
+export const prefixRadialGradient = (context, tokens) => {
+    let shape = 0 /* CSSRadialShape.CIRCLE */;
+    let size = 3 /* CSSRadialExtent.FARTHEST_CORNER */;
+    const stops = [];
+    const position = [];
+    parseFunctionArgs(tokens).forEach((arg, i) => {
+        let isColorStop = true;
         if (i === 0) {
-            isColorStop = arg.reduce(function (acc, token) {
-                if ((0, parser_1.isIdentToken)(token)) {
+            isColorStop = arg.reduce((acc, token) => {
+                if (isIdentToken(token)) {
                     switch (token.value) {
                         case 'center':
-                            position.push(length_percentage_1.FIFTY_PERCENT);
+                            position.push(FIFTY_PERCENT);
                             return false;
                         case 'top':
                         case 'left':
-                            position.push(length_percentage_1.ZERO_LENGTH);
+                            position.push(ZERO_LENGTH);
                             return false;
                         case 'right':
                         case 'bottom':
-                            position.push(length_percentage_1.HUNDRED_PERCENT);
+                            position.push(HUNDRED_PERCENT);
                             return false;
                     }
                 }
-                else if ((0, length_percentage_1.isLengthPercentage)(token) || (0, length_1.isLength)(token)) {
+                else if (isLengthPercentage(token) || isLength(token)) {
                     position.push(token);
                     return false;
                 }
@@ -38,32 +35,32 @@ var prefixRadialGradient = function (context, tokens) {
             }, isColorStop);
         }
         else if (i === 1) {
-            isColorStop = arg.reduce(function (acc, token) {
-                if ((0, parser_1.isIdentToken)(token)) {
+            isColorStop = arg.reduce((acc, token) => {
+                if (isIdentToken(token)) {
                     switch (token.value) {
-                        case radial_gradient_1.CIRCLE:
+                        case CIRCLE:
                             shape = 0 /* CSSRadialShape.CIRCLE */;
                             return false;
-                        case radial_gradient_1.ELLIPSE:
+                        case ELLIPSE:
                             shape = 1 /* CSSRadialShape.ELLIPSE */;
                             return false;
-                        case radial_gradient_1.CONTAIN:
-                        case radial_gradient_1.CLOSEST_SIDE:
+                        case CONTAIN:
+                        case CLOSEST_SIDE:
                             size = 0 /* CSSRadialExtent.CLOSEST_SIDE */;
                             return false;
-                        case radial_gradient_1.FARTHEST_SIDE:
+                        case FARTHEST_SIDE:
                             size = 1 /* CSSRadialExtent.FARTHEST_SIDE */;
                             return false;
-                        case radial_gradient_1.CLOSEST_CORNER:
+                        case CLOSEST_CORNER:
                             size = 2 /* CSSRadialExtent.CLOSEST_CORNER */;
                             return false;
-                        case radial_gradient_1.COVER:
-                        case radial_gradient_1.FARTHEST_CORNER:
+                        case COVER:
+                        case FARTHEST_CORNER:
                             size = 3 /* CSSRadialExtent.FARTHEST_CORNER */;
                             return false;
                     }
                 }
-                else if ((0, length_1.isLength)(token) || (0, length_percentage_1.isLengthPercentage)(token)) {
+                else if (isLength(token) || isLengthPercentage(token)) {
                     if (!Array.isArray(size)) {
                         size = [];
                     }
@@ -74,11 +71,10 @@ var prefixRadialGradient = function (context, tokens) {
             }, isColorStop);
         }
         if (isColorStop) {
-            var colorStop = (0, gradient_1.parseColorStop)(context, arg);
+            const colorStop = parseColorStop(context, arg);
             stops.push(colorStop);
         }
     });
-    return { size: size, shape: shape, stops: stops, position: position, type: 2 /* CSSImageType.RADIAL_GRADIENT */ };
+    return { size, shape, stops, position, type: 2 /* CSSImageType.RADIAL_GRADIENT */ };
 };
-exports.prefixRadialGradient = prefixRadialGradient;
 //# sourceMappingURL=-prefix-radial-gradient.js.map

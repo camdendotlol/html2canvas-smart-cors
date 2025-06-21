@@ -1,14 +1,18 @@
-const path = require('path');
-const webpack = require('webpack');
-const pkg = require('../package.json');
+import path from 'node:path';
+import webpack from 'webpack';
+import pkg from '../package.json' with {type: 'json'};
+import url from 'node:url';
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const banner = `/*
- * ${pkg.title} ${pkg.version} <${pkg.homepage}>
+ * ${pkg.title} ${pkg.version}
  * Copyright (c) ${new Date().getFullYear()} ${pkg.author.name} <${pkg.author.url}>
  * Released under ${pkg.license} License
  */`;
 
-module.exports = {
+export default {
     mode: 'production', // or 'development'
     entry: './tests/testrunner.ts',
     output: {

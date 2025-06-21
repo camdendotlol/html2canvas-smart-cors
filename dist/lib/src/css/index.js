@@ -1,195 +1,256 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CSSParsedCounterDeclaration = exports.CSSParsedPseudoDeclaration = exports.CSSParsedDeclaration = void 0;
-var bitwise_1 = require("../core/bitwise");
-var background_clip_1 = require("./property-descriptors/background-clip");
-var background_color_1 = require("./property-descriptors/background-color");
-var background_image_1 = require("./property-descriptors/background-image");
-var background_origin_1 = require("./property-descriptors/background-origin");
-var background_position_1 = require("./property-descriptors/background-position");
-var background_repeat_1 = require("./property-descriptors/background-repeat");
-var background_size_1 = require("./property-descriptors/background-size");
-var border_color_1 = require("./property-descriptors/border-color");
-var border_radius_1 = require("./property-descriptors/border-radius");
-var border_style_1 = require("./property-descriptors/border-style");
-var border_width_1 = require("./property-descriptors/border-width");
-var box_shadow_1 = require("./property-descriptors/box-shadow");
-var color_1 = require("./property-descriptors/color");
-var content_1 = require("./property-descriptors/content");
-var counter_increment_1 = require("./property-descriptors/counter-increment");
-var counter_reset_1 = require("./property-descriptors/counter-reset");
-var direction_1 = require("./property-descriptors/direction");
-var display_1 = require("./property-descriptors/display");
-var duration_1 = require("./property-descriptors/duration");
-var float_1 = require("./property-descriptors/float");
-var font_family_1 = require("./property-descriptors/font-family");
-var font_size_1 = require("./property-descriptors/font-size");
-var font_style_1 = require("./property-descriptors/font-style");
-var font_variant_1 = require("./property-descriptors/font-variant");
-var font_weight_1 = require("./property-descriptors/font-weight");
-var letter_spacing_1 = require("./property-descriptors/letter-spacing");
-var line_break_1 = require("./property-descriptors/line-break");
-var line_height_1 = require("./property-descriptors/line-height");
-var list_style_image_1 = require("./property-descriptors/list-style-image");
-var list_style_position_1 = require("./property-descriptors/list-style-position");
-var list_style_type_1 = require("./property-descriptors/list-style-type");
-var margin_1 = require("./property-descriptors/margin");
-var object_fit_1 = require("./property-descriptors/object-fit");
-var opacity_1 = require("./property-descriptors/opacity");
-var overflow_1 = require("./property-descriptors/overflow");
-var overflow_wrap_1 = require("./property-descriptors/overflow-wrap");
-var padding_1 = require("./property-descriptors/padding");
-var paint_order_1 = require("./property-descriptors/paint-order");
-var position_1 = require("./property-descriptors/position");
-var quotes_1 = require("./property-descriptors/quotes");
-var text_align_1 = require("./property-descriptors/text-align");
-var text_decoration_color_1 = require("./property-descriptors/text-decoration-color");
-var text_decoration_line_1 = require("./property-descriptors/text-decoration-line");
-var text_shadow_1 = require("./property-descriptors/text-shadow");
-var text_transform_1 = require("./property-descriptors/text-transform");
-var transform_1 = require("./property-descriptors/transform");
-var transform_origin_1 = require("./property-descriptors/transform-origin");
-var visibility_1 = require("./property-descriptors/visibility");
-var webkit_text_stroke_color_1 = require("./property-descriptors/webkit-text-stroke-color");
-var webkit_text_stroke_width_1 = require("./property-descriptors/webkit-text-stroke-width");
-var word_break_1 = require("./property-descriptors/word-break");
-var z_index_1 = require("./property-descriptors/z-index");
-var parser_1 = require("./syntax/parser");
-var tokenizer_1 = require("./syntax/tokenizer");
-var angle_1 = require("./types/angle");
-var color_2 = require("./types/color");
-var image_1 = require("./types/image");
-var length_1 = require("./types/length");
-var length_percentage_1 = require("./types/length-percentage");
-var time_1 = require("./types/time");
-var CSSParsedDeclaration = /** @class */ (function () {
-    function CSSParsedDeclaration(context, declaration) {
-        var _a, _b;
-        this.animationDuration = parse(context, duration_1.duration, declaration.animationDuration);
-        this.backgroundClip = parse(context, background_clip_1.backgroundClip, declaration.backgroundClip);
-        this.backgroundColor = parse(context, background_color_1.backgroundColor, declaration.backgroundColor);
-        this.backgroundImage = parse(context, background_image_1.backgroundImage, declaration.backgroundImage);
-        this.backgroundOrigin = parse(context, background_origin_1.backgroundOrigin, declaration.backgroundOrigin);
-        this.backgroundPosition = parse(context, background_position_1.backgroundPosition, declaration.backgroundPosition);
-        this.backgroundRepeat = parse(context, background_repeat_1.backgroundRepeat, declaration.backgroundRepeat);
-        this.backgroundSize = parse(context, background_size_1.backgroundSize, declaration.backgroundSize);
-        this.borderTopColor = parse(context, border_color_1.borderTopColor, declaration.borderTopColor);
-        this.borderRightColor = parse(context, border_color_1.borderRightColor, declaration.borderRightColor);
-        this.borderBottomColor = parse(context, border_color_1.borderBottomColor, declaration.borderBottomColor);
-        this.borderLeftColor = parse(context, border_color_1.borderLeftColor, declaration.borderLeftColor);
-        this.borderTopLeftRadius = parse(context, border_radius_1.borderTopLeftRadius, declaration.borderTopLeftRadius);
-        this.borderTopRightRadius = parse(context, border_radius_1.borderTopRightRadius, declaration.borderTopRightRadius);
-        this.borderBottomRightRadius = parse(context, border_radius_1.borderBottomRightRadius, declaration.borderBottomRightRadius);
-        this.borderBottomLeftRadius = parse(context, border_radius_1.borderBottomLeftRadius, declaration.borderBottomLeftRadius);
-        this.borderTopStyle = parse(context, border_style_1.borderTopStyle, declaration.borderTopStyle);
-        this.borderRightStyle = parse(context, border_style_1.borderRightStyle, declaration.borderRightStyle);
-        this.borderBottomStyle = parse(context, border_style_1.borderBottomStyle, declaration.borderBottomStyle);
-        this.borderLeftStyle = parse(context, border_style_1.borderLeftStyle, declaration.borderLeftStyle);
-        this.borderTopWidth = parse(context, border_width_1.borderTopWidth, declaration.borderTopWidth);
-        this.borderRightWidth = parse(context, border_width_1.borderRightWidth, declaration.borderRightWidth);
-        this.borderBottomWidth = parse(context, border_width_1.borderBottomWidth, declaration.borderBottomWidth);
-        this.borderLeftWidth = parse(context, border_width_1.borderLeftWidth, declaration.borderLeftWidth);
-        this.boxShadow = parse(context, box_shadow_1.boxShadow, declaration.boxShadow);
-        this.color = parse(context, color_1.color, declaration.color);
-        this.direction = parse(context, direction_1.direction, declaration.direction);
-        this.display = parse(context, display_1.display, declaration.display);
-        this.float = parse(context, float_1.float, declaration.cssFloat);
-        this.fontFamily = parse(context, font_family_1.fontFamily, declaration.fontFamily);
-        this.fontSize = parse(context, font_size_1.fontSize, declaration.fontSize);
-        this.fontStyle = parse(context, font_style_1.fontStyle, declaration.fontStyle);
-        this.fontVariant = parse(context, font_variant_1.fontVariant, declaration.fontVariant);
-        this.fontWeight = parse(context, font_weight_1.fontWeight, declaration.fontWeight);
-        this.letterSpacing = parse(context, letter_spacing_1.letterSpacing, declaration.letterSpacing);
-        this.lineBreak = parse(context, line_break_1.lineBreak, declaration.lineBreak);
-        this.lineHeight = parse(context, line_height_1.lineHeight, declaration.lineHeight);
-        this.listStyleImage = parse(context, list_style_image_1.listStyleImage, declaration.listStyleImage);
-        this.listStylePosition = parse(context, list_style_position_1.listStylePosition, declaration.listStylePosition);
-        this.listStyleType = parse(context, list_style_type_1.listStyleType, declaration.listStyleType);
-        this.marginTop = parse(context, margin_1.marginTop, declaration.marginTop);
-        this.marginRight = parse(context, margin_1.marginRight, declaration.marginRight);
-        this.marginBottom = parse(context, margin_1.marginBottom, declaration.marginBottom);
-        this.marginLeft = parse(context, margin_1.marginLeft, declaration.marginLeft);
-        this.objectFit = parse(context, object_fit_1.objectFit, declaration.objectFit);
-        this.opacity = parse(context, opacity_1.opacity, declaration.opacity);
-        var overflowTuple = parse(context, overflow_1.overflow, declaration.overflow);
+import { contains } from '../core/bitwise';
+import { backgroundClip } from './property-descriptors/background-clip';
+import { backgroundColor } from './property-descriptors/background-color';
+import { backgroundImage } from './property-descriptors/background-image';
+import { backgroundOrigin } from './property-descriptors/background-origin';
+import { backgroundPosition } from './property-descriptors/background-position';
+import { backgroundRepeat } from './property-descriptors/background-repeat';
+import { backgroundSize } from './property-descriptors/background-size';
+import { borderBottomColor, borderLeftColor, borderRightColor, borderTopColor } from './property-descriptors/border-color';
+import { borderBottomLeftRadius, borderBottomRightRadius, borderTopLeftRadius, borderTopRightRadius } from './property-descriptors/border-radius';
+import { borderBottomStyle, borderLeftStyle, borderRightStyle, borderTopStyle } from './property-descriptors/border-style';
+import { borderBottomWidth, borderLeftWidth, borderRightWidth, borderTopWidth } from './property-descriptors/border-width';
+import { boxShadow } from './property-descriptors/box-shadow';
+import { color } from './property-descriptors/color';
+import { content } from './property-descriptors/content';
+import { counterIncrement } from './property-descriptors/counter-increment';
+import { counterReset } from './property-descriptors/counter-reset';
+import { direction } from './property-descriptors/direction';
+import { display } from './property-descriptors/display';
+import { duration } from './property-descriptors/duration';
+import { float } from './property-descriptors/float';
+import { fontFamily } from './property-descriptors/font-family';
+import { fontSize } from './property-descriptors/font-size';
+import { fontStyle } from './property-descriptors/font-style';
+import { fontVariant } from './property-descriptors/font-variant';
+import { fontWeight } from './property-descriptors/font-weight';
+import { letterSpacing } from './property-descriptors/letter-spacing';
+import { lineBreak } from './property-descriptors/line-break';
+import { lineHeight } from './property-descriptors/line-height';
+import { listStyleImage } from './property-descriptors/list-style-image';
+import { listStylePosition } from './property-descriptors/list-style-position';
+import { listStyleType } from './property-descriptors/list-style-type';
+import { marginBottom, marginLeft, marginRight, marginTop } from './property-descriptors/margin';
+import { objectFit } from './property-descriptors/object-fit';
+import { opacity } from './property-descriptors/opacity';
+import { overflow } from './property-descriptors/overflow';
+import { overflowWrap } from './property-descriptors/overflow-wrap';
+import { paddingBottom, paddingLeft, paddingRight, paddingTop } from './property-descriptors/padding';
+import { paintOrder } from './property-descriptors/paint-order';
+import { position } from './property-descriptors/position';
+import { quotes } from './property-descriptors/quotes';
+import { textAlign } from './property-descriptors/text-align';
+import { textDecorationColor } from './property-descriptors/text-decoration-color';
+import { textDecorationLine } from './property-descriptors/text-decoration-line';
+import { textShadow } from './property-descriptors/text-shadow';
+import { textTransform } from './property-descriptors/text-transform';
+import { transform } from './property-descriptors/transform';
+import { transformOrigin } from './property-descriptors/transform-origin';
+import { visibility } from './property-descriptors/visibility';
+import { webkitTextStrokeColor } from './property-descriptors/webkit-text-stroke-color';
+import { webkitTextStrokeWidth } from './property-descriptors/webkit-text-stroke-width';
+import { wordBreak } from './property-descriptors/word-break';
+import { zIndex } from './property-descriptors/z-index';
+import { Parser, isIdentToken } from './syntax/parser';
+import { Tokenizer } from './syntax/tokenizer';
+import { angle } from './types/angle';
+import { color as colorType, isTransparent } from './types/color';
+import { image } from './types/image';
+import { isLength } from './types/length';
+import { ZERO_LENGTH, isLengthPercentage } from './types/length-percentage';
+import { time } from './types/time';
+export class CSSParsedDeclaration {
+    animationDuration;
+    backgroundClip;
+    backgroundColor;
+    backgroundImage;
+    backgroundOrigin;
+    backgroundPosition;
+    backgroundRepeat;
+    backgroundSize;
+    borderTopColor;
+    borderRightColor;
+    borderBottomColor;
+    borderLeftColor;
+    borderTopLeftRadius;
+    borderTopRightRadius;
+    borderBottomRightRadius;
+    borderBottomLeftRadius;
+    borderTopStyle;
+    borderRightStyle;
+    borderBottomStyle;
+    borderLeftStyle;
+    borderTopWidth;
+    borderRightWidth;
+    borderBottomWidth;
+    borderLeftWidth;
+    boxShadow;
+    color;
+    direction;
+    display;
+    float;
+    fontFamily;
+    fontSize;
+    fontStyle;
+    fontVariant;
+    fontWeight;
+    letterSpacing;
+    lineBreak;
+    lineHeight;
+    listStyleImage;
+    listStylePosition;
+    listStyleType;
+    marginTop;
+    marginRight;
+    marginBottom;
+    marginLeft;
+    objectFit;
+    opacity;
+    overflowX;
+    overflowY;
+    overflowWrap;
+    paddingTop;
+    paddingRight;
+    paddingBottom;
+    paddingLeft;
+    paintOrder;
+    position;
+    textAlign;
+    textDecorationColor;
+    textDecorationLine;
+    textShadow;
+    textTransform;
+    transform;
+    transformOrigin;
+    visibility;
+    webkitTextStrokeColor;
+    webkitTextStrokeWidth;
+    wordBreak;
+    zIndex;
+    constructor(context, declaration) {
+        this.animationDuration = parse(context, duration, declaration.animationDuration);
+        this.backgroundClip = parse(context, backgroundClip, declaration.backgroundClip);
+        this.backgroundColor = parse(context, backgroundColor, declaration.backgroundColor);
+        this.backgroundImage = parse(context, backgroundImage, declaration.backgroundImage);
+        this.backgroundOrigin = parse(context, backgroundOrigin, declaration.backgroundOrigin);
+        this.backgroundPosition = parse(context, backgroundPosition, declaration.backgroundPosition);
+        this.backgroundRepeat = parse(context, backgroundRepeat, declaration.backgroundRepeat);
+        this.backgroundSize = parse(context, backgroundSize, declaration.backgroundSize);
+        this.borderTopColor = parse(context, borderTopColor, declaration.borderTopColor);
+        this.borderRightColor = parse(context, borderRightColor, declaration.borderRightColor);
+        this.borderBottomColor = parse(context, borderBottomColor, declaration.borderBottomColor);
+        this.borderLeftColor = parse(context, borderLeftColor, declaration.borderLeftColor);
+        this.borderTopLeftRadius = parse(context, borderTopLeftRadius, declaration.borderTopLeftRadius);
+        this.borderTopRightRadius = parse(context, borderTopRightRadius, declaration.borderTopRightRadius);
+        this.borderBottomRightRadius = parse(context, borderBottomRightRadius, declaration.borderBottomRightRadius);
+        this.borderBottomLeftRadius = parse(context, borderBottomLeftRadius, declaration.borderBottomLeftRadius);
+        this.borderTopStyle = parse(context, borderTopStyle, declaration.borderTopStyle);
+        this.borderRightStyle = parse(context, borderRightStyle, declaration.borderRightStyle);
+        this.borderBottomStyle = parse(context, borderBottomStyle, declaration.borderBottomStyle);
+        this.borderLeftStyle = parse(context, borderLeftStyle, declaration.borderLeftStyle);
+        this.borderTopWidth = parse(context, borderTopWidth, declaration.borderTopWidth);
+        this.borderRightWidth = parse(context, borderRightWidth, declaration.borderRightWidth);
+        this.borderBottomWidth = parse(context, borderBottomWidth, declaration.borderBottomWidth);
+        this.borderLeftWidth = parse(context, borderLeftWidth, declaration.borderLeftWidth);
+        this.boxShadow = parse(context, boxShadow, declaration.boxShadow);
+        this.color = parse(context, color, declaration.color);
+        this.direction = parse(context, direction, declaration.direction);
+        this.display = parse(context, display, declaration.display);
+        this.float = parse(context, float, declaration.cssFloat);
+        this.fontFamily = parse(context, fontFamily, declaration.fontFamily);
+        this.fontSize = parse(context, fontSize, declaration.fontSize);
+        this.fontStyle = parse(context, fontStyle, declaration.fontStyle);
+        this.fontVariant = parse(context, fontVariant, declaration.fontVariant);
+        this.fontWeight = parse(context, fontWeight, declaration.fontWeight);
+        this.letterSpacing = parse(context, letterSpacing, declaration.letterSpacing);
+        this.lineBreak = parse(context, lineBreak, declaration.lineBreak);
+        this.lineHeight = parse(context, lineHeight, declaration.lineHeight);
+        this.listStyleImage = parse(context, listStyleImage, declaration.listStyleImage);
+        this.listStylePosition = parse(context, listStylePosition, declaration.listStylePosition);
+        this.listStyleType = parse(context, listStyleType, declaration.listStyleType);
+        this.marginTop = parse(context, marginTop, declaration.marginTop);
+        this.marginRight = parse(context, marginRight, declaration.marginRight);
+        this.marginBottom = parse(context, marginBottom, declaration.marginBottom);
+        this.marginLeft = parse(context, marginLeft, declaration.marginLeft);
+        this.objectFit = parse(context, objectFit, declaration.objectFit);
+        this.opacity = parse(context, opacity, declaration.opacity);
+        const overflowTuple = parse(context, overflow, declaration.overflow);
         this.overflowX = overflowTuple[0];
         this.overflowY = overflowTuple[overflowTuple.length > 1 ? 1 : 0];
-        this.overflowWrap = parse(context, overflow_wrap_1.overflowWrap, declaration.overflowWrap);
-        this.paddingTop = parse(context, padding_1.paddingTop, declaration.paddingTop);
-        this.paddingRight = parse(context, padding_1.paddingRight, declaration.paddingRight);
-        this.paddingBottom = parse(context, padding_1.paddingBottom, declaration.paddingBottom);
-        this.paddingLeft = parse(context, padding_1.paddingLeft, declaration.paddingLeft);
-        this.paintOrder = parse(context, paint_order_1.paintOrder, declaration.paintOrder);
-        this.position = parse(context, position_1.position, declaration.position);
-        this.textAlign = parse(context, text_align_1.textAlign, declaration.textAlign);
-        this.textDecorationColor = parse(context, text_decoration_color_1.textDecorationColor, (_a = declaration.textDecorationColor) !== null && _a !== void 0 ? _a : declaration.color);
-        this.textDecorationLine = parse(context, text_decoration_line_1.textDecorationLine, (_b = declaration.textDecorationLine) !== null && _b !== void 0 ? _b : declaration.textDecoration);
-        this.textShadow = parse(context, text_shadow_1.textShadow, declaration.textShadow);
-        this.textTransform = parse(context, text_transform_1.textTransform, declaration.textTransform);
-        this.transform = parse(context, transform_1.transform, declaration.transform);
-        this.transformOrigin = parse(context, transform_origin_1.transformOrigin, declaration.transformOrigin);
-        this.visibility = parse(context, visibility_1.visibility, declaration.visibility);
-        this.webkitTextStrokeColor = parse(context, webkit_text_stroke_color_1.webkitTextStrokeColor, declaration.webkitTextStrokeColor);
-        this.webkitTextStrokeWidth = parse(context, webkit_text_stroke_width_1.webkitTextStrokeWidth, declaration.webkitTextStrokeWidth);
-        this.wordBreak = parse(context, word_break_1.wordBreak, declaration.wordBreak);
-        this.zIndex = parse(context, z_index_1.zIndex, declaration.zIndex);
-        this.objectFit = parse(context, object_fit_1.objectFit, declaration.objectFit);
+        this.overflowWrap = parse(context, overflowWrap, declaration.overflowWrap);
+        this.paddingTop = parse(context, paddingTop, declaration.paddingTop);
+        this.paddingRight = parse(context, paddingRight, declaration.paddingRight);
+        this.paddingBottom = parse(context, paddingBottom, declaration.paddingBottom);
+        this.paddingLeft = parse(context, paddingLeft, declaration.paddingLeft);
+        this.paintOrder = parse(context, paintOrder, declaration.paintOrder);
+        this.position = parse(context, position, declaration.position);
+        this.textAlign = parse(context, textAlign, declaration.textAlign);
+        this.textDecorationColor = parse(context, textDecorationColor, declaration.textDecorationColor ?? declaration.color);
+        this.textDecorationLine = parse(context, textDecorationLine, declaration.textDecorationLine ?? declaration.textDecoration);
+        this.textShadow = parse(context, textShadow, declaration.textShadow);
+        this.textTransform = parse(context, textTransform, declaration.textTransform);
+        this.transform = parse(context, transform, declaration.transform);
+        this.transformOrigin = parse(context, transformOrigin, declaration.transformOrigin);
+        this.visibility = parse(context, visibility, declaration.visibility);
+        this.webkitTextStrokeColor = parse(context, webkitTextStrokeColor, declaration.webkitTextStrokeColor);
+        this.webkitTextStrokeWidth = parse(context, webkitTextStrokeWidth, declaration.webkitTextStrokeWidth);
+        this.wordBreak = parse(context, wordBreak, declaration.wordBreak);
+        this.zIndex = parse(context, zIndex, declaration.zIndex);
+        this.objectFit = parse(context, objectFit, declaration.objectFit);
     }
-    CSSParsedDeclaration.prototype.isVisible = function () {
+    isVisible() {
         return this.display > 0 && this.opacity > 0 && this.visibility === 0 /* VISIBILITY.VISIBLE */;
-    };
-    CSSParsedDeclaration.prototype.isTransparent = function () {
-        return (0, color_2.isTransparent)(this.backgroundColor);
-    };
-    CSSParsedDeclaration.prototype.isTransformed = function () {
+    }
+    isTransparent() {
+        return isTransparent(this.backgroundColor);
+    }
+    isTransformed() {
         return this.transform !== null;
-    };
-    CSSParsedDeclaration.prototype.isPositioned = function () {
+    }
+    isPositioned() {
         return this.position !== 0 /* POSITION.STATIC */;
-    };
-    CSSParsedDeclaration.prototype.isPositionedWithZIndex = function () {
+    }
+    isPositionedWithZIndex() {
         return this.isPositioned() && !this.zIndex.auto;
-    };
-    CSSParsedDeclaration.prototype.isFloating = function () {
+    }
+    isFloating() {
         return this.float !== 0 /* FLOAT.NONE */;
-    };
-    CSSParsedDeclaration.prototype.isInlineLevel = function () {
-        return ((0, bitwise_1.contains)(this.display, 4 /* DISPLAY.INLINE */) ||
-            (0, bitwise_1.contains)(this.display, 33554432 /* DISPLAY.INLINE_BLOCK */) ||
-            (0, bitwise_1.contains)(this.display, 268435456 /* DISPLAY.INLINE_FLEX */) ||
-            (0, bitwise_1.contains)(this.display, 536870912 /* DISPLAY.INLINE_GRID */) ||
-            (0, bitwise_1.contains)(this.display, 67108864 /* DISPLAY.INLINE_LIST_ITEM */) ||
-            (0, bitwise_1.contains)(this.display, 134217728 /* DISPLAY.INLINE_TABLE */));
-    };
-    return CSSParsedDeclaration;
-}());
-exports.CSSParsedDeclaration = CSSParsedDeclaration;
-var CSSParsedPseudoDeclaration = /** @class */ (function () {
-    function CSSParsedPseudoDeclaration(context, declaration) {
-        this.content = parse(context, content_1.content, declaration.content);
-        this.quotes = parse(context, quotes_1.quotes, declaration.quotes);
     }
-    return CSSParsedPseudoDeclaration;
-}());
-exports.CSSParsedPseudoDeclaration = CSSParsedPseudoDeclaration;
-var CSSParsedCounterDeclaration = /** @class */ (function () {
-    function CSSParsedCounterDeclaration(context, declaration) {
-        this.counterIncrement = parse(context, counter_increment_1.counterIncrement, declaration.counterIncrement);
-        this.counterReset = parse(context, counter_reset_1.counterReset, declaration.counterReset);
+    isInlineLevel() {
+        return (contains(this.display, 4 /* DISPLAY.INLINE */) ||
+            contains(this.display, 33554432 /* DISPLAY.INLINE_BLOCK */) ||
+            contains(this.display, 268435456 /* DISPLAY.INLINE_FLEX */) ||
+            contains(this.display, 536870912 /* DISPLAY.INLINE_GRID */) ||
+            contains(this.display, 67108864 /* DISPLAY.INLINE_LIST_ITEM */) ||
+            contains(this.display, 134217728 /* DISPLAY.INLINE_TABLE */));
     }
-    return CSSParsedCounterDeclaration;
-}());
-exports.CSSParsedCounterDeclaration = CSSParsedCounterDeclaration;
+}
+export class CSSParsedPseudoDeclaration {
+    content;
+    quotes;
+    constructor(context, declaration) {
+        this.content = parse(context, content, declaration.content);
+        this.quotes = parse(context, quotes, declaration.quotes);
+    }
+}
+export class CSSParsedCounterDeclaration {
+    counterIncrement;
+    counterReset;
+    constructor(context, declaration) {
+        this.counterIncrement = parse(context, counterIncrement, declaration.counterIncrement);
+        this.counterReset = parse(context, counterReset, declaration.counterReset);
+    }
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-var parse = function (context, descriptor, style) {
-    var tokenizer = new tokenizer_1.Tokenizer();
-    var value = style !== null && typeof style !== 'undefined' ? style.toString() : descriptor.initialValue;
+const parse = (context, descriptor, style) => {
+    const tokenizer = new Tokenizer();
+    const value = style !== null && typeof style !== 'undefined' ? style.toString() : descriptor.initialValue;
     tokenizer.write(value);
-    var parser = new parser_1.Parser(tokenizer.read());
+    const parser = new Parser(tokenizer.read());
     switch (descriptor.type) {
         case 2 /* PropertyDescriptorParsingType.IDENT_VALUE */:
-            var token = parser.parseComponentValue();
-            return descriptor.parse(context, (0, parser_1.isIdentToken)(token) ? token.value : descriptor.initialValue);
+            const token = parser.parseComponentValue();
+            return descriptor.parse(context, isIdentToken(token) ? token.value : descriptor.initialValue);
         case 0 /* PropertyDescriptorParsingType.VALUE */:
             return descriptor.parse(context, parser.parseComponentValue());
         case 1 /* PropertyDescriptorParsingType.LIST */:
@@ -199,19 +260,19 @@ var parse = function (context, descriptor, style) {
         case 3 /* PropertyDescriptorParsingType.TYPE_VALUE */:
             switch (descriptor.format) {
                 case 'angle':
-                    return angle_1.angle.parse(context, parser.parseComponentValue());
+                    return angle.parse(context, parser.parseComponentValue());
                 case 'color':
-                    return color_2.color.parse(context, parser.parseComponentValue());
+                    return colorType.parse(context, parser.parseComponentValue());
                 case 'image':
-                    return image_1.image.parse(context, parser.parseComponentValue());
+                    return image.parse(context, parser.parseComponentValue());
                 case 'length':
-                    var length_2 = parser.parseComponentValue();
-                    return (0, length_1.isLength)(length_2) ? length_2 : length_percentage_1.ZERO_LENGTH;
+                    const length = parser.parseComponentValue();
+                    return isLength(length) ? length : ZERO_LENGTH;
                 case 'length-percentage':
-                    var value_1 = parser.parseComponentValue();
-                    return (0, length_percentage_1.isLengthPercentage)(value_1) ? value_1 : length_percentage_1.ZERO_LENGTH;
+                    const value = parser.parseComponentValue();
+                    return isLengthPercentage(value) ? value : ZERO_LENGTH;
                 case 'time':
-                    return time_1.time.parse(context, parser.parseComponentValue());
+                    return time.parse(context, parser.parseComponentValue());
             }
     }
 };

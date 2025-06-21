@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.borderLeftStyle = exports.borderBottomStyle = exports.borderRightStyle = exports.borderTopStyle = void 0;
-var borderStyleForSide = function (side) { return ({
-    name: "border-".concat(side, "-style"),
+const borderStyleForSide = (side) => ({
+    name: `border-${side}-style`,
     initialValue: 'solid',
     prefix: false,
     type: 2 /* PropertyDescriptorParsingType.IDENT_VALUE */,
-    parse: function (_context, style) {
+    parse: (_context, style) => {
         switch (style) {
             case 'none':
                 return 0 /* BORDER_STYLE.NONE */;
@@ -19,9 +16,9 @@ var borderStyleForSide = function (side) { return ({
         }
         return 1 /* BORDER_STYLE.SOLID */;
     }
-}); };
-exports.borderTopStyle = borderStyleForSide('top');
-exports.borderRightStyle = borderStyleForSide('right');
-exports.borderBottomStyle = borderStyleForSide('bottom');
-exports.borderLeftStyle = borderStyleForSide('left');
+});
+export const borderTopStyle = borderStyleForSide('top');
+export const borderRightStyle = borderStyleForSide('right');
+export const borderBottomStyle = borderStyleForSide('bottom');
+export const borderLeftStyle = borderStyleForSide('left');
 //# sourceMappingURL=border-style.js.map

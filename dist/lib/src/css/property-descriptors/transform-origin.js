@@ -1,21 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.transformOrigin = void 0;
-var length_percentage_1 = require("../types/length-percentage");
-var tokenizer_1 = require("../syntax/tokenizer");
-var DEFAULT_VALUE = {
+import { isLengthPercentage } from '../types/length-percentage';
+import { FLAG_INTEGER } from '../syntax/tokenizer';
+const DEFAULT_VALUE = {
     type: 16 /* TokenType.PERCENTAGE_TOKEN */,
     number: 50,
-    flags: tokenizer_1.FLAG_INTEGER
+    flags: FLAG_INTEGER
 };
-var DEFAULT = [DEFAULT_VALUE, DEFAULT_VALUE];
-exports.transformOrigin = {
+const DEFAULT = [DEFAULT_VALUE, DEFAULT_VALUE];
+export const transformOrigin = {
     name: 'transform-origin',
     initialValue: '50% 50%',
     prefix: true,
     type: 1 /* PropertyDescriptorParsingType.LIST */,
-    parse: function (_context, tokens) {
-        var origins = tokens.filter(length_percentage_1.isLengthPercentage);
+    parse: (_context, tokens) => {
+        const origins = tokens.filter(isLengthPercentage);
         if (origins.length !== 2) {
             return DEFAULT;
         }

@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.listStyleType = void 0;
-exports.listStyleType = {
+export const listStyleType = {
     name: 'list-style-type',
     initialValue: 'none',
     prefix: false,
     type: 2 /* PropertyDescriptorParsingType.IDENT_VALUE */,
-    parse: function (_context, type) {
+    parse: (_context, type) => {
         switch (type) {
             case 'disc':
                 return 0 /* LIST_STYLE_TYPE.DISC */;

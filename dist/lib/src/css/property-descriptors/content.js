@@ -1,16 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.content = void 0;
-exports.content = {
+export const content = {
     name: 'content',
     initialValue: 'none',
     type: 1 /* PropertyDescriptorParsingType.LIST */,
     prefix: false,
-    parse: function (_context, tokens) {
+    parse: (_context, tokens) => {
         if (tokens.length === 0) {
             return [];
         }
-        var first = tokens[0];
+        const first = tokens[0];
         if (first.type === 20 /* TokenType.IDENT_TOKEN */ && first.value === 'none') {
             return [];
         }

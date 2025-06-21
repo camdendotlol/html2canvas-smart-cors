@@ -1,19 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.display = void 0;
-var parser_1 = require("../syntax/parser");
-exports.display = {
+import { isIdentToken } from '../syntax/parser';
+export const display = {
     name: 'display',
     initialValue: 'inline-block',
     prefix: false,
     type: 1 /* PropertyDescriptorParsingType.LIST */,
-    parse: function (_context, tokens) {
-        return tokens.filter(parser_1.isIdentToken).reduce(function (bit, token) {
+    parse: (_context, tokens) => {
+        return tokens.filter(isIdentToken).reduce((bit, token) => {
             return bit | parseDisplayValue(token.value);
         }, 0 /* DISPLAY.NONE */);
     }
 };
-var parseDisplayValue = function (display) {
+const parseDisplayValue = (display) => {
     switch (display) {
         case 'block':
         case '-webkit-box':

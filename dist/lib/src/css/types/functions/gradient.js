@@ -1,29 +1,25 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.calculateRadius = exports.calculateGradientDirection = exports.processColorStops = exports.parseColorStop = void 0;
-var color_1 = require("../color");
-var length_percentage_1 = require("../length-percentage");
-var parseColorStop = function (context, args) {
-    var color = color_1.color.parse(context, args[0]);
-    var stop = args[1];
-    return stop && (0, length_percentage_1.isLengthPercentage)(stop) ? { color: color, stop: stop } : { color: color, stop: null };
+import { color as colorType } from '../color';
+import { getAbsoluteValue, HUNDRED_PERCENT, isLengthPercentage, ZERO_LENGTH } from '../length-percentage';
+export const parseColorStop = (context, args) => {
+    const color = colorType.parse(context, args[0]);
+    const stop = args[1];
+    return stop && isLengthPercentage(stop) ? { color, stop } : { color, stop: null };
 };
-exports.parseColorStop = parseColorStop;
-var processColorStops = function (stops, lineLength) {
-    var first = stops[0];
-    var last = stops[stops.length - 1];
+export const processColorStops = (stops, lineLength) => {
+    const first = stops[0];
+    const last = stops[stops.length - 1];
     if (first.stop === null) {
-        first.stop = length_percentage_1.ZERO_LENGTH;
+        first.stop = ZERO_LENGTH;
     }
     if (last.stop === null) {
-        last.stop = length_percentage_1.HUNDRED_PERCENT;
+        last.stop = HUNDRED_PERCENT;
     }
-    var processStops = [];
-    var previous = 0;
-    for (var i = 0; i < stops.length; i++) {
-        var stop_1 = stops[i].stop;
-        if (stop_1 !== null) {
-            var absoluteValue = (0, length_percentage_1.getAbsoluteValue)(stop_1, lineLength);
+    const processStops = [];
+    let previous = 0;
+    for (let i = 0; i < stops.length; i++) {
+        const stop = stops[i].stop;
+        if (stop !== null) {
+            const absoluteValue = getAbsoluteValue(stop, lineLength);
             if (absoluteValue > previous) {
                 processStops.push(absoluteValue);
             }
@@ -36,59 +32,56 @@ var processColorStops = function (stops, lineLength) {
             processStops.push(null);
         }
     }
-    var gapBegin = null;
-    for (var i = 0; i < processStops.length; i++) {
-        var stop_2 = processStops[i];
-        if (stop_2 === null) {
+    let gapBegin = null;
+    for (let i = 0; i < processStops.length; i++) {
+        const stop = processStops[i];
+        if (stop === null) {
             if (gapBegin === null) {
                 gapBegin = i;
             }
         }
         else if (gapBegin !== null) {
-            var gapLength = i - gapBegin;
-            var beforeGap = processStops[gapBegin - 1];
-            var gapValue = (stop_2 - beforeGap) / (gapLength + 1);
-            for (var g = 1; g <= gapLength; g++) {
+            const gapLength = i - gapBegin;
+            const beforeGap = processStops[gapBegin - 1];
+            const gapValue = (stop - beforeGap) / (gapLength + 1);
+            for (let g = 1; g <= gapLength; g++) {
                 processStops[gapBegin + g - 1] = gapValue * g;
             }
             gapBegin = null;
         }
     }
-    return stops.map(function (_a, i) {
-        var color = _a.color;
-        return { color: color, stop: Math.max(Math.min(1, processStops[i] / lineLength), 0) };
+    return stops.map(({ color }, i) => {
+        return { color, stop: Math.max(Math.min(1, processStops[i] / lineLength), 0) };
     });
 };
-exports.processColorStops = processColorStops;
-var getAngleFromCorner = function (corner, width, height) {
-    var centerX = width / 2;
-    var centerY = height / 2;
-    var x = (0, length_percentage_1.getAbsoluteValue)(corner[0], width) - centerX;
-    var y = centerY - (0, length_percentage_1.getAbsoluteValue)(corner[1], height);
+const getAngleFromCorner = (corner, width, height) => {
+    const centerX = width / 2;
+    const centerY = height / 2;
+    const x = getAbsoluteValue(corner[0], width) - centerX;
+    const y = centerY - getAbsoluteValue(corner[1], height);
     return (Math.atan2(y, x) + Math.PI * 2) % (Math.PI * 2);
 };
-var calculateGradientDirection = function (angle, width, height) {
-    var radian = typeof angle === 'number' ? angle : getAngleFromCorner(angle, width, height);
-    var lineLength = Math.abs(width * Math.sin(radian)) + Math.abs(height * Math.cos(radian));
-    var halfWidth = width / 2;
-    var halfHeight = height / 2;
-    var halfLineLength = lineLength / 2;
-    var yDiff = Math.sin(radian - Math.PI / 2) * halfLineLength;
-    var xDiff = Math.cos(radian - Math.PI / 2) * halfLineLength;
+export const calculateGradientDirection = (angle, width, height) => {
+    const radian = typeof angle === 'number' ? angle : getAngleFromCorner(angle, width, height);
+    const lineLength = Math.abs(width * Math.sin(radian)) + Math.abs(height * Math.cos(radian));
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
+    const halfLineLength = lineLength / 2;
+    const yDiff = Math.sin(radian - Math.PI / 2) * halfLineLength;
+    const xDiff = Math.cos(radian - Math.PI / 2) * halfLineLength;
     return [lineLength, halfWidth - xDiff, halfWidth + xDiff, halfHeight - yDiff, halfHeight + yDiff];
 };
-exports.calculateGradientDirection = calculateGradientDirection;
-var distance = function (a, b) { return Math.sqrt(a * a + b * b); };
-var findCorner = function (width, height, x, y, closest) {
-    var corners = [
+const distance = (a, b) => Math.sqrt(a * a + b * b);
+const findCorner = (width, height, x, y, closest) => {
+    const corners = [
         [0, 0],
         [0, height],
         [width, 0],
         [width, height]
     ];
-    return corners.reduce(function (stat, corner) {
-        var cx = corner[0], cy = corner[1];
-        var d = distance(x - cx, y - cy);
+    return corners.reduce((stat, corner) => {
+        const [cx, cy] = corner;
+        const d = distance(x - cx, y - cy);
         if (closest ? d < stat.optimumDistance : d > stat.optimumDistance) {
             return {
                 optimumCorner: corner,
@@ -101,9 +94,9 @@ var findCorner = function (width, height, x, y, closest) {
         optimumCorner: null
     }).optimumCorner;
 };
-var calculateRadius = function (gradient, x, y, width, height) {
-    var rx = 0;
-    var ry = 0;
+export const calculateRadius = (gradient, x, y, width, height) => {
+    let rx = 0;
+    let ry = 0;
     switch (gradient.size) {
         case 0 /* CSSRadialExtent.CLOSEST_SIDE */:
             // The ending shape is sized so that that it exactly meets the side of the gradient box closest to the gradient’s center.
@@ -124,8 +117,8 @@ var calculateRadius = function (gradient, x, y, width, height) {
             }
             else if (gradient.shape === 1 /* CSSRadialShape.ELLIPSE */) {
                 // Compute the ratio ry/rx (which is to be the same as for "closest-side")
-                var c = Math.min(Math.abs(y), Math.abs(y - height)) / Math.min(Math.abs(x), Math.abs(x - width));
-                var _a = findCorner(width, height, x, y, true), cx = _a[0], cy = _a[1];
+                const c = Math.min(Math.abs(y), Math.abs(y - height)) / Math.min(Math.abs(x), Math.abs(x - width));
+                const [cx, cy] = findCorner(width, height, x, y, true);
                 rx = distance(cx - x, (cy - y) / c);
                 ry = c * rx;
             }
@@ -148,18 +141,17 @@ var calculateRadius = function (gradient, x, y, width, height) {
             }
             else if (gradient.shape === 1 /* CSSRadialShape.ELLIPSE */) {
                 // Compute the ratio ry/rx (which is to be the same as for "farthest-side")
-                var c = Math.max(Math.abs(y), Math.abs(y - height)) / Math.max(Math.abs(x), Math.abs(x - width));
-                var _b = findCorner(width, height, x, y, false), cx = _b[0], cy = _b[1];
+                const c = Math.max(Math.abs(y), Math.abs(y - height)) / Math.max(Math.abs(x), Math.abs(x - width));
+                const [cx, cy] = findCorner(width, height, x, y, false);
                 rx = distance(cx - x, (cy - y) / c);
                 ry = c * rx;
             }
             break;
     }
     if (Array.isArray(gradient.size)) {
-        rx = (0, length_percentage_1.getAbsoluteValue)(gradient.size[0], width);
-        ry = gradient.size.length === 2 ? (0, length_percentage_1.getAbsoluteValue)(gradient.size[1], height) : rx;
+        rx = getAbsoluteValue(gradient.size[0], width);
+        ry = gradient.size.length === 2 ? getAbsoluteValue(gradient.size[1], height) : rx;
     }
     return [rx, ry];
 };
-exports.calculateRadius = calculateRadius;
 //# sourceMappingURL=gradient.js.map

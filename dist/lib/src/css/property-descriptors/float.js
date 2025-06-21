@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.float = void 0;
-exports.float = {
+export const float = {
     name: 'float',
     initialValue: 'none',
     prefix: false,
     type: 2 /* PropertyDescriptorParsingType.IDENT_VALUE */,
-    parse: function (_context, float) {
+    parse: (_context, float) => {
         switch (float) {
             case 'left':
                 return 1 /* FLOAT.LEFT */;

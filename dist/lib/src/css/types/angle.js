@@ -1,15 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deg = exports.parseNamedSide = exports.isAngle = exports.angle = void 0;
-var parser_1 = require("../syntax/parser");
-var length_percentage_1 = require("./length-percentage");
-var DEG = 'deg';
-var GRAD = 'grad';
-var RAD = 'rad';
-var TURN = 'turn';
-exports.angle = {
+import { isIdentToken } from '../syntax/parser';
+import { HUNDRED_PERCENT, ZERO_LENGTH } from './length-percentage';
+const DEG = 'deg';
+const GRAD = 'grad';
+const RAD = 'rad';
+const TURN = 'turn';
+export const angle = {
     name: 'angle',
-    parse: function (_context, value) {
+    parse: (_context, value) => {
         if (value.type === 15 /* TokenType.DIMENSION_TOKEN */) {
             switch (value.unit) {
                 case DEG:
@@ -22,10 +19,10 @@ exports.angle = {
                     return Math.PI * 2 * value.number;
             }
         }
-        throw new Error("Unsupported angle type");
+        throw new Error(`Unsupported angle type`);
     }
 };
-var isAngle = function (value) {
+export const isAngle = (value) => {
     if (value.type === 15 /* TokenType.DIMENSION_TOKEN */) {
         if (value.unit === DEG || value.unit === GRAD || value.unit === RAD || value.unit === TURN) {
             return true;
@@ -33,49 +30,46 @@ var isAngle = function (value) {
     }
     return false;
 };
-exports.isAngle = isAngle;
-var parseNamedSide = function (tokens) {
-    var sideOrCorner = tokens
-        .filter(parser_1.isIdentToken)
-        .map(function (ident) { return ident.value; })
+export const parseNamedSide = (tokens) => {
+    const sideOrCorner = tokens
+        .filter(isIdentToken)
+        .map((ident) => ident.value)
         .join(' ');
     switch (sideOrCorner) {
         case 'to bottom right':
         case 'to right bottom':
         case 'left top':
         case 'top left':
-            return [length_percentage_1.ZERO_LENGTH, length_percentage_1.ZERO_LENGTH];
+            return [ZERO_LENGTH, ZERO_LENGTH];
         case 'to top':
         case 'bottom':
-            return (0, exports.deg)(0);
+            return deg(0);
         case 'to bottom left':
         case 'to left bottom':
         case 'right top':
         case 'top right':
-            return [length_percentage_1.ZERO_LENGTH, length_percentage_1.HUNDRED_PERCENT];
+            return [ZERO_LENGTH, HUNDRED_PERCENT];
         case 'to right':
         case 'left':
-            return (0, exports.deg)(90);
+            return deg(90);
         case 'to top left':
         case 'to left top':
         case 'right bottom':
         case 'bottom right':
-            return [length_percentage_1.HUNDRED_PERCENT, length_percentage_1.HUNDRED_PERCENT];
+            return [HUNDRED_PERCENT, HUNDRED_PERCENT];
         case 'to bottom':
         case 'top':
-            return (0, exports.deg)(180);
+            return deg(180);
         case 'to top right':
         case 'to right top':
         case 'left bottom':
         case 'bottom left':
-            return [length_percentage_1.HUNDRED_PERCENT, length_percentage_1.ZERO_LENGTH];
+            return [HUNDRED_PERCENT, ZERO_LENGTH];
         case 'to left':
         case 'right':
-            return (0, exports.deg)(270);
+            return deg(270);
     }
     return 0;
 };
-exports.parseNamedSide = parseNamedSide;
-var deg = function (deg) { return (Math.PI * deg) / 180; };
-exports.deg = deg;
+export const deg = (deg) => (Math.PI * deg) / 180;
 //# sourceMappingURL=angle.js.map

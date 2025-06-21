@@ -1,25 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var assert_1 = require("assert");
-var parser_1 = require("../../syntax/parser");
-var font_family_1 = require("../font-family");
-var fontFamilyParse = function (value) { return font_family_1.fontFamily.parse({}, parser_1.Parser.parseValues(value)); };
-describe('property-descriptors', function () {
-    describe('font-family', function () {
-        it('sans-serif', function () { return (0, assert_1.deepEqual)(fontFamilyParse('sans-serif'), ['sans-serif']); });
-        it('great fonts 40 library', function () {
-            return (0, assert_1.deepEqual)(fontFamilyParse('great fonts 40 library'), ["'great fonts 40 library'"]);
-        });
-        it('preferred font, "quoted fallback font", font', function () {
-            return (0, assert_1.deepEqual)(fontFamilyParse('preferred font, "quoted fallback font", font'), [
-                "'preferred font'",
-                "'quoted fallback font'",
-                'font'
-            ]);
-        });
-        it("'escaping test\\'s font'", function () {
-            return (0, assert_1.deepEqual)(fontFamilyParse("'escaping test\\'s font'"), ["'escaping test's font'"]);
-        });
+import { deepEqual } from 'assert';
+import { Parser } from '../../syntax/parser';
+import { fontFamily } from '../font-family';
+const fontFamilyParse = (value) => fontFamily.parse({}, Parser.parseValues(value));
+describe('property-descriptors', () => {
+    describe('font-family', () => {
+        it('sans-serif', () => deepEqual(fontFamilyParse('sans-serif'), ['sans-serif']));
+        it('great fonts 40 library', () => deepEqual(fontFamilyParse('great fonts 40 library'), ["'great fonts 40 library'"]));
+        it('preferred font, "quoted fallback font", font', () => deepEqual(fontFamilyParse('preferred font, "quoted fallback font", font'), [
+            "'preferred font'",
+            "'quoted fallback font'",
+            'font'
+        ]));
+        it("'escaping test\\'s font'", () => deepEqual(fontFamilyParse("'escaping test\\'s font'"), ["'escaping test's font'"]));
     });
 });
 //# sourceMappingURL=font-family.js.map

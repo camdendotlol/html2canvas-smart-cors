@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.fontVariant = void 0;
-var parser_1 = require("../syntax/parser");
-exports.fontVariant = {
+import { isIdentToken } from '../syntax/parser';
+export const fontVariant = {
     name: 'font-variant',
     initialValue: 'none',
     type: 1 /* PropertyDescriptorParsingType.LIST */,
     prefix: false,
-    parse: function (_context, tokens) {
-        return tokens.filter(parser_1.isIdentToken).map(function (token) { return token.value; });
+    parse: (_context, tokens) => {
+        return tokens.filter(isIdentToken).map((token) => token.value);
     }
 };
 //# sourceMappingURL=font-variant.js.map

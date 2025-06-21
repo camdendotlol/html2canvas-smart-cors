@@ -2,12 +2,7 @@
 // @ts-ignore
 import {testList, ignoredTests} from '../build/reftests';
 import {default as platform} from 'platform';
-import {Promise as ES6Promise} from 'es6-promise';
 import type {ScreenshotRequest} from './types';
-
-if (typeof window.Promise === 'undefined') {
-    Object.assign(window, {Promise: ES6Promise});
-}
 
 const uploadResults = (canvas: HTMLCanvasElement, url: string) => {
     return new Promise<void>((resolve: () => void, reject: (error: string) => void) => {

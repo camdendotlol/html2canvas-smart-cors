@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.objectFit = void 0;
-exports.objectFit = {
+export const objectFit = {
     name: 'object-fit',
     initialValue: 'fill',
     prefix: false,
     type: 2 /* PropertyDescriptorParsingType.IDENT_VALUE */,
-    parse: function (_context, objectFit) {
+    parse: (_context, objectFit) => {
         switch (objectFit) {
             case 'contain':
                 return "contain" /* OBJECT_FIT.CONTAIN */;

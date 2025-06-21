@@ -1,16 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TextContainer = void 0;
-var text_1 = require("../css/layout/text");
-var TextContainer = /** @class */ (function () {
-    function TextContainer(context, node, styles) {
+import { parseTextBounds } from '../css/layout/text';
+export class TextContainer {
+    text;
+    textBounds;
+    constructor(context, node, styles) {
         this.text = transform(node.data, styles.textTransform);
-        this.textBounds = (0, text_1.parseTextBounds)(context, this.text, styles, node);
+        this.textBounds = parseTextBounds(context, this.text, styles, node);
     }
-    return TextContainer;
-}());
-exports.TextContainer = TextContainer;
-var transform = function (text, transform) {
+}
+const transform = (text, transform) => {
     switch (transform) {
         case 1 /* TEXT_TRANSFORM.LOWERCASE */:
             return text.toLowerCase();
@@ -22,8 +19,8 @@ var transform = function (text, transform) {
             return text;
     }
 };
-var CAPITALIZE = /(^|\s|:|-|\(|\))([a-z])/g;
-var capitalize = function (m, p1, p2) {
+const CAPITALIZE = /(^|\s|:|-|\(|\))([a-z])/g;
+const capitalize = (m, p1, p2) => {
     if (m.length > 0) {
         return p1 + p2.toUpperCase();
     }

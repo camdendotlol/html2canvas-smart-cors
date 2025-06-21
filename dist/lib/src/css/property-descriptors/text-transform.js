@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.textTransform = void 0;
-exports.textTransform = {
+export const textTransform = {
     name: 'text-transform',
     initialValue: 'none',
     prefix: false,
     type: 2 /* PropertyDescriptorParsingType.IDENT_VALUE */,
-    parse: function (_context, textTransform) {
+    parse: (_context, textTransform) => {
         switch (textTransform) {
             case 'uppercase':
                 return 2 /* TEXT_TRANSFORM.UPPERCASE */;

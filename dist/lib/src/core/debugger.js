@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.isDebugging = void 0;
-var elementDebuggerAttribute = 'data-html2canvas-debug';
-var getElementDebugType = function (element) {
-    var attribute = element.getAttribute(elementDebuggerAttribute);
+const elementDebuggerAttribute = 'data-html2canvas-debug';
+const getElementDebugType = (element) => {
+    const attribute = element.getAttribute(elementDebuggerAttribute);
     switch (attribute) {
         case 'all':
             return 1 /* DebuggerType.ALL */;
@@ -17,9 +14,8 @@ var getElementDebugType = function (element) {
             return 0 /* DebuggerType.NONE */;
     }
 };
-var isDebugging = function (element, type) {
-    var elementType = getElementDebugType(element);
+export const isDebugging = (element, type) => {
+    const elementType = getElementDebugType(element);
     return elementType === 1 /* DebuggerType.ALL */ || type === elementType;
 };
-exports.isDebugging = isDebugging;
 //# sourceMappingURL=debugger.js.map

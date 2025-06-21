@@ -1,10 +1,14 @@
-const path = require('path');
-const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
-const pkg = require('./package.json');
+import path from 'node:path';
+import url from 'node:url';
+import webpack from 'webpack';
+import TerserPlugin from 'terser-webpack-plugin';
+import pkg from './package.json' with {type: 'json'};
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const banner = `/*!
- * ${pkg.title} ${pkg.version} <${pkg.homepage}>
+ * ${pkg.title} ${pkg.version}
  * Copyright (c) ${new Date().getFullYear()} ${pkg.author.name} <${pkg.author.url}>
  * Released under ${pkg.license} License
  */`;
@@ -85,4 +89,4 @@ const minifiedConfig = {
     }
 };
 
-module.exports = [esmConfig, nonMinifiedConfig, minifiedConfig];
+export default [esmConfig, nonMinifiedConfig, minifiedConfig];

@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.calculateObjectFitBounds = void 0;
-var bounds_1 = require("../css/layout/bounds");
-var calculateObjectFitBounds = function (objectFit, naturalWidth, naturalHeight, clientWidth, clientHeight) {
-    var naturalRatio = naturalWidth / naturalHeight;
-    var clientRatio = clientWidth / clientHeight;
+import { Bounds } from '../css/layout/bounds';
+export const calculateObjectFitBounds = (objectFit, naturalWidth, naturalHeight, clientWidth, clientHeight) => {
+    const naturalRatio = naturalWidth / naturalHeight;
+    const clientRatio = clientWidth / clientHeight;
     // 'object-position' is not currently supported, so use default value of 50% 50%.
-    var objectPositionX = 0.5;
-    var objectPositionY = 0.5;
-    var srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight;
+    const objectPositionX = 0.5;
+    const objectPositionY = 0.5;
+    let srcX, srcY, srcWidth, srcHeight, destX, destY, destWidth, destHeight;
     if (objectFit === "scale-down" /* OBJECT_FIT.SCALE_DOWN */) {
         objectFit =
             naturalWidth < clientWidth && naturalHeight < clientHeight
@@ -95,9 +92,8 @@ var calculateObjectFitBounds = function (objectFit, naturalWidth, naturalHeight,
             break;
     }
     return {
-        src: new bounds_1.Bounds(srcX, srcY, srcWidth, srcHeight),
-        dest: new bounds_1.Bounds(destX, destY, destWidth, destHeight)
+        src: new Bounds(srcX, srcY, srcWidth, srcHeight),
+        dest: new Bounds(destX, destY, destWidth, destHeight)
     };
 };
-exports.calculateObjectFitBounds = calculateObjectFitBounds;
 //# sourceMappingURL=object-fit.js.map

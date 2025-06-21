@@ -2,7 +2,7 @@
 import {screenshotApp, corsApp} from './server';
 import {Server} from 'http';
 import {config as KarmaConfig, Server as KarmaServer} from 'karma';
-import * as path from 'path';
+import path from 'node:path';
 
 const karmaTestRunner = () =>
     new Promise((resolve, reject) => {

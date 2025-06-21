@@ -1,20 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.reversePath = exports.transformPath = exports.equalPath = exports.PathType = void 0;
-var PathType;
+export var PathType;
 (function (PathType) {
     PathType[PathType["VECTOR"] = 0] = "VECTOR";
     PathType[PathType["BEZIER_CURVE"] = 1] = "BEZIER_CURVE";
-})(PathType || (exports.PathType = PathType = {}));
-var equalPath = function (a, b) {
+})(PathType || (PathType = {}));
+export const equalPath = (a, b) => {
     if (a.length === b.length) {
-        return a.some(function (v, i) { return v === b[i]; });
+        return a.some((v, i) => v === b[i]);
     }
     return false;
 };
-exports.equalPath = equalPath;
-var transformPath = function (path, deltaX, deltaY, deltaW, deltaH) {
-    return path.map(function (point, index) {
+export const transformPath = (path, deltaX, deltaY, deltaW, deltaH) => {
+    return path.map((point, index) => {
         switch (index) {
             case 0:
                 return point.add(deltaX, deltaY);
@@ -28,14 +24,12 @@ var transformPath = function (path, deltaX, deltaY, deltaW, deltaH) {
         return point;
     });
 };
-exports.transformPath = transformPath;
-var reversePath = function (path) {
+export const reversePath = (path) => {
     return path
         .slice(0)
         .reverse()
-        .map(function (point) {
+        .map((point) => {
         return point.reverse();
     });
 };
-exports.reversePath = reversePath;
 //# sourceMappingURL=path.js.map

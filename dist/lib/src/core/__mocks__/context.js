@@ -1,21 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Context = void 0;
-var logger_1 = require("./logger");
-var Context = /** @class */ (function () {
-    function Context() {
-        var _this = this;
-        this.logger = logger_1.logger;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        this._cache = {};
+import { logger } from './logger';
+export class Context {
+    logger = logger;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    _cache = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cache;
+    constructor() {
         this.cache = {
-            addImage: jest.fn().mockImplementation(function (src) {
-                _this._cache[src] = Promise.resolve();
+            addImage: jest.fn().mockImplementation((src) => {
+                this._cache[src] = Promise.resolve();
                 return true;
             })
         };
     }
-    return Context;
-}());
-exports.Context = Context;
+}
 //# sourceMappingURL=context.js.map

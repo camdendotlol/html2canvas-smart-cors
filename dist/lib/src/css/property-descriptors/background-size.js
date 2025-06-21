@@ -1,24 +1,19 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.backgroundSize = exports.BACKGROUND_SIZE = void 0;
-var parser_1 = require("../syntax/parser");
-var length_percentage_1 = require("../types/length-percentage");
-var BACKGROUND_SIZE;
+import { isIdentToken, parseFunctionArgs } from '../syntax/parser';
+import { isLengthPercentage } from '../types/length-percentage';
+export var BACKGROUND_SIZE;
 (function (BACKGROUND_SIZE) {
     BACKGROUND_SIZE["AUTO"] = "auto";
     BACKGROUND_SIZE["CONTAIN"] = "contain";
     BACKGROUND_SIZE["COVER"] = "cover";
-})(BACKGROUND_SIZE || (exports.BACKGROUND_SIZE = BACKGROUND_SIZE = {}));
-exports.backgroundSize = {
+})(BACKGROUND_SIZE || (BACKGROUND_SIZE = {}));
+export const backgroundSize = {
     name: 'background-size',
     initialValue: '0',
     prefix: false,
     type: 1 /* PropertyDescriptorParsingType.LIST */,
-    parse: function (_context, tokens) {
-        return (0, parser_1.parseFunctionArgs)(tokens).map(function (values) { return values.filter(isBackgroundSizeInfoToken); });
+    parse: (_context, tokens) => {
+        return parseFunctionArgs(tokens).map((values) => values.filter(isBackgroundSizeInfoToken));
     }
 };
-var isBackgroundSizeInfoToken = function (value) {
-    return (0, parser_1.isIdentToken)(value) || (0, length_percentage_1.isLengthPercentage)(value);
-};
+const isBackgroundSizeInfoToken = (value) => isIdentToken(value) || isLengthPercentage(value);
 //# sourceMappingURL=background-size.js.map

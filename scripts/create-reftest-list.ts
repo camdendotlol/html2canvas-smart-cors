@@ -1,8 +1,12 @@
 'use strict';
 
 import {readFileSync, writeFileSync} from 'fs';
-import {resolve, relative} from 'path';
+import {dirname, resolve, relative} from 'node:path';
 import {sync} from 'glob';
+import {fileURLToPath} from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 if (process.argv.length <= 2) {
     console.log('No ignore.txt file provided');

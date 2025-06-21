@@ -1,136 +1,128 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.segmentGraphemes = exports.parseTextBounds = exports.TextBounds = void 0;
-var css_line_break_1 = require("css-line-break");
-var text_segmentation_1 = require("text-segmentation");
-var bounds_1 = require("./bounds");
-var features_1 = require("../../core/features");
-var TextBounds = /** @class */ (function () {
-    function TextBounds(text, bounds) {
+import { fromCodePoint, LineBreaker, toCodePoints } from 'css-line-break';
+import { splitGraphemes } from 'text-segmentation';
+import { Bounds, parseBounds } from './bounds';
+import { FEATURES } from '../../core/features';
+export class TextBounds {
+    text;
+    bounds;
+    constructor(text, bounds) {
         this.text = text;
         this.bounds = bounds;
     }
-    return TextBounds;
-}());
-exports.TextBounds = TextBounds;
-var parseTextBounds = function (context, value, styles, node) {
-    var textList = breakText(value, styles);
-    var textBounds = [];
-    var offset = 0;
-    textList.forEach(function (text) {
+}
+export const parseTextBounds = (context, value, styles, node) => {
+    const textList = breakText(value, styles);
+    const textBounds = [];
+    let offset = 0;
+    textList.forEach((text) => {
         if (styles.textDecorationLine.length || text.trim().length > 0) {
-            if (features_1.FEATURES.SUPPORT_RANGE_BOUNDS) {
-                var clientRects = createRange(node, offset, text.length).getClientRects();
+            if (FEATURES.SUPPORT_RANGE_BOUNDS) {
+                const clientRects = createRange(node, offset, text.length).getClientRects();
                 if (clientRects.length > 1) {
-                    var subSegments = (0, exports.segmentGraphemes)(text);
-                    var subOffset_1 = 0;
-                    subSegments.forEach(function (subSegment) {
-                        textBounds.push(new TextBounds(subSegment, bounds_1.Bounds.fromDOMRectList(context, createRange(node, subOffset_1 + offset, subSegment.length).getClientRects())));
-                        subOffset_1 += subSegment.length;
+                    const subSegments = segmentGraphemes(text);
+                    let subOffset = 0;
+                    subSegments.forEach((subSegment) => {
+                        textBounds.push(new TextBounds(subSegment, Bounds.fromDOMRectList(context, createRange(node, subOffset + offset, subSegment.length).getClientRects())));
+                        subOffset += subSegment.length;
                     });
                 }
                 else {
-                    textBounds.push(new TextBounds(text, bounds_1.Bounds.fromDOMRectList(context, clientRects)));
+                    textBounds.push(new TextBounds(text, Bounds.fromDOMRectList(context, clientRects)));
                 }
             }
             else {
-                var replacementNode = node.splitText(text.length);
+                const replacementNode = node.splitText(text.length);
                 textBounds.push(new TextBounds(text, getWrapperBounds(context, node)));
                 node = replacementNode;
             }
         }
-        else if (!features_1.FEATURES.SUPPORT_RANGE_BOUNDS) {
+        else if (!FEATURES.SUPPORT_RANGE_BOUNDS) {
             node = node.splitText(text.length);
         }
         offset += text.length;
     });
     return textBounds;
 };
-exports.parseTextBounds = parseTextBounds;
-var getWrapperBounds = function (context, node) {
-    var ownerDocument = node.ownerDocument;
+const getWrapperBounds = (context, node) => {
+    const ownerDocument = node.ownerDocument;
     if (ownerDocument) {
-        var wrapper = ownerDocument.createElement('html2canvaswrapper');
+        const wrapper = ownerDocument.createElement('html2canvaswrapper');
         wrapper.appendChild(node.cloneNode(true));
-        var parentNode = node.parentNode;
+        const parentNode = node.parentNode;
         if (parentNode) {
             parentNode.replaceChild(wrapper, node);
-            var bounds = (0, bounds_1.parseBounds)(context, wrapper);
+            const bounds = parseBounds(context, wrapper);
             if (wrapper.firstChild) {
                 parentNode.replaceChild(wrapper.firstChild, wrapper);
             }
             return bounds;
         }
     }
-    return bounds_1.Bounds.EMPTY;
+    return Bounds.EMPTY;
 };
-var createRange = function (node, offset, length) {
-    var ownerDocument = node.ownerDocument;
+const createRange = (node, offset, length) => {
+    const ownerDocument = node.ownerDocument;
     if (!ownerDocument) {
         throw new Error('Node has no owner document');
     }
-    var range = ownerDocument.createRange();
+    const range = ownerDocument.createRange();
     range.setStart(node, offset);
     range.setEnd(node, offset + length);
     return range;
 };
-var segmentGraphemes = function (value) {
-    if (features_1.FEATURES.SUPPORT_NATIVE_TEXT_SEGMENTATION) {
+export const segmentGraphemes = (value) => {
+    if (FEATURES.SUPPORT_NATIVE_TEXT_SEGMENTATION) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        var segmenter = new Intl.Segmenter(void 0, { granularity: 'grapheme' });
+        const segmenter = new Intl.Segmenter(void 0, { granularity: 'grapheme' });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return Array.from(segmenter.segment(value)).map(function (segment) { return segment.segment; });
+        return Array.from(segmenter.segment(value)).map((segment) => segment.segment);
     }
-    return (0, text_segmentation_1.splitGraphemes)(value);
+    return splitGraphemes(value);
 };
-exports.segmentGraphemes = segmentGraphemes;
-var segmentWords = function (value, styles) {
-    if (features_1.FEATURES.SUPPORT_NATIVE_TEXT_SEGMENTATION) {
+const segmentWords = (value, styles) => {
+    if (FEATURES.SUPPORT_NATIVE_TEXT_SEGMENTATION) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        var segmenter = new Intl.Segmenter(void 0, {
+        const segmenter = new Intl.Segmenter(void 0, {
             granularity: 'word'
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return Array.from(segmenter.segment(value)).map(function (segment) { return segment.segment; });
+        return Array.from(segmenter.segment(value)).map((segment) => segment.segment);
     }
     return breakWords(value, styles);
 };
-var breakText = function (value, styles) {
-    return styles.letterSpacing !== 0 ? (0, exports.segmentGraphemes)(value) : segmentWords(value, styles);
+const breakText = (value, styles) => {
+    return styles.letterSpacing !== 0 ? segmentGraphemes(value) : segmentWords(value, styles);
 };
 // https://drafts.csswg.org/css-text/#word-separator
-var wordSeparators = [0x0020, 0x00a0, 0x1361, 0x10100, 0x10101, 0x1039, 0x1091];
-var breakWords = function (str, styles) {
-    var breaker = (0, css_line_break_1.LineBreaker)(str, {
+const wordSeparators = [0x0020, 0x00a0, 0x1361, 0x10100, 0x10101, 0x1039, 0x1091];
+const breakWords = (str, styles) => {
+    const breaker = LineBreaker(str, {
         lineBreak: styles.lineBreak,
         wordBreak: styles.overflowWrap === "break-word" /* OVERFLOW_WRAP.BREAK_WORD */ ? 'break-word' : styles.wordBreak
     });
-    var words = [];
-    var bk;
-    var _loop_1 = function () {
+    const words = [];
+    let bk;
+    while (!(bk = breaker.next()).done) {
         if (bk.value) {
-            var value = bk.value.slice();
-            var codePoints = (0, css_line_break_1.toCodePoints)(value);
-            var word_1 = '';
-            codePoints.forEach(function (codePoint) {
+            const value = bk.value.slice();
+            const codePoints = toCodePoints(value);
+            let word = '';
+            codePoints.forEach((codePoint) => {
                 if (wordSeparators.indexOf(codePoint) === -1) {
-                    word_1 += (0, css_line_break_1.fromCodePoint)(codePoint);
+                    word += fromCodePoint(codePoint);
                 }
                 else {
-                    if (word_1.length) {
-                        words.push(word_1);
+                    if (word.length) {
+                        words.push(word);
                     }
-                    words.push((0, css_line_break_1.fromCodePoint)(codePoint));
-                    word_1 = '';
+                    words.push(fromCodePoint(codePoint));
+                    word = '';
                 }
             });
-            if (word_1.length) {
-                words.push(word_1);
+            if (word.length) {
+                words.push(word);
             }
         }
-    };
-    while (!(bk = breaker.next()).done) {
-        _loop_1();
     }
     return words;
 };

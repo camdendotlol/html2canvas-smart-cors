@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.time = void 0;
-exports.time = {
+export const time = {
     name: 'time',
-    parse: function (_context, value) {
+    parse: (_context, value) => {
         if (value.type === 15 /* TokenType.DIMENSION_TOKEN */) {
             switch (value.unit.toLowerCase()) {
                 case 's':
@@ -12,7 +9,7 @@ exports.time = {
                     return value.number;
             }
         }
-        throw new Error("Unsupported time type");
+        throw new Error(`Unsupported time type`);
     }
 };
 //# sourceMappingURL=time.js.map

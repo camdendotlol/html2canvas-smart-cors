@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DocumentCloner = void 0;
-var DocumentCloner = /** @class */ (function () {
-    function DocumentCloner() {
+export class DocumentCloner {
+    clonedReferenceElement;
+    constructor() {
         this.clonedReferenceElement = {
             ownerDocument: {
                 defaultView: {
@@ -12,13 +10,11 @@ var DocumentCloner = /** @class */ (function () {
             }
         };
     }
-    DocumentCloner.prototype.toIFrame = function () {
+    toIFrame() {
         return Promise.resolve({});
-    };
-    DocumentCloner.destroy = function () {
+    }
+    static destroy() {
         return true;
-    };
-    return DocumentCloner;
-}());
-exports.DocumentCloner = DocumentCloner;
+    }
+}
 //# sourceMappingURL=document-cloner.js.map

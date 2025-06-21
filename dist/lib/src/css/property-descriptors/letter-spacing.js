@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.letterSpacing = void 0;
-exports.letterSpacing = {
+export const letterSpacing = {
     name: 'letter-spacing',
     initialValue: '0',
     prefix: false,
     type: 0 /* PropertyDescriptorParsingType.VALUE */,
-    parse: function (_context, token) {
+    parse: (_context, token) => {
         if (token.type === 20 /* TokenType.IDENT_TOKEN */ && token.value === 'normal') {
             return 0;
         }

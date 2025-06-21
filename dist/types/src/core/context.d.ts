@@ -7,9 +7,9 @@ export type ContextOptions = {
 } & ResourceOptions;
 export declare class Context {
     windowBounds: Bounds;
+    private static instanceCount;
     private readonly instanceName;
     readonly logger: Logger;
     readonly cache: Cache;
-    private static instanceCount;
     constructor(options: ContextOptions, windowBounds: Bounds);
 }

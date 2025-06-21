@@ -1,53 +1,51 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseFunctionArgs = exports.nonFunctionArgSeparator = exports.nonWhiteSpace = exports.isIdentWithValue = exports.isStringToken = exports.isIdentToken = exports.isNumberToken = exports.isDimensionToken = exports.Parser = void 0;
-var tokenizer_1 = require("./tokenizer");
-var Parser = /** @class */ (function () {
-    function Parser(tokens) {
+import { EOF_TOKEN, Tokenizer } from './tokenizer';
+export class Parser {
+    _tokens;
+    constructor(tokens) {
         this._tokens = tokens;
     }
-    Parser.create = function (value) {
-        var tokenizer = new tokenizer_1.Tokenizer();
+    static create(value) {
+        const tokenizer = new Tokenizer();
         tokenizer.write(value);
         return new Parser(tokenizer.read());
-    };
-    Parser.parseValue = function (value) {
+    }
+    static parseValue(value) {
         return Parser.create(value).parseComponentValue();
-    };
-    Parser.parseValues = function (value) {
+    }
+    static parseValues(value) {
         return Parser.create(value).parseComponentValues();
-    };
-    Parser.prototype.parseComponentValue = function () {
-        var token = this.consumeToken();
+    }
+    parseComponentValue() {
+        let token = this.consumeToken();
         while (token.type === 31 /* TokenType.WHITESPACE_TOKEN */) {
             token = this.consumeToken();
         }
         if (token.type === 32 /* TokenType.EOF_TOKEN */) {
-            throw new SyntaxError("Error parsing CSS component value, unexpected EOF");
+            throw new SyntaxError(`Error parsing CSS component value, unexpected EOF`);
         }
         this.reconsumeToken(token);
-        var value = this.consumeComponentValue();
+        const value = this.consumeComponentValue();
         do {
             token = this.consumeToken();
         } while (token.type === 31 /* TokenType.WHITESPACE_TOKEN */);
         if (token.type === 32 /* TokenType.EOF_TOKEN */) {
             return value;
         }
-        throw new SyntaxError("Error parsing CSS component value, multiple values found when expecting only one");
-    };
-    Parser.prototype.parseComponentValues = function () {
-        var values = [];
+        throw new SyntaxError(`Error parsing CSS component value, multiple values found when expecting only one`);
+    }
+    parseComponentValues() {
+        const values = [];
         while (true) {
-            var value = this.consumeComponentValue();
+            const value = this.consumeComponentValue();
             if (value.type === 32 /* TokenType.EOF_TOKEN */) {
                 return values;
             }
             values.push(value);
             values.push();
         }
-    };
-    Parser.prototype.consumeComponentValue = function () {
-        var token = this.consumeToken();
+    }
+    consumeComponentValue() {
+        const token = this.consumeToken();
         switch (token.type) {
             case 11 /* TokenType.LEFT_CURLY_BRACKET_TOKEN */:
             case 28 /* TokenType.LEFT_SQUARE_BRACKET_TOKEN */:
@@ -57,10 +55,10 @@ var Parser = /** @class */ (function () {
                 return this.consumeFunction(token);
         }
         return token;
-    };
-    Parser.prototype.consumeSimpleBlock = function (type) {
-        var block = { type: type, values: [] };
-        var token = this.consumeToken();
+    }
+    consumeSimpleBlock(type) {
+        const block = { type, values: [] };
+        let token = this.consumeToken();
         while (true) {
             if (token.type === 32 /* TokenType.EOF_TOKEN */ || isEndingTokenFor(token, type)) {
                 return block;
@@ -69,59 +67,46 @@ var Parser = /** @class */ (function () {
             block.values.push(this.consumeComponentValue());
             token = this.consumeToken();
         }
-    };
-    Parser.prototype.consumeFunction = function (functionToken) {
-        var cssFunction = {
+    }
+    consumeFunction(functionToken) {
+        const cssFunction = {
             name: functionToken.value,
             values: [],
             type: 18 /* TokenType.FUNCTION */
         };
         while (true) {
-            var token = this.consumeToken();
+            const token = this.consumeToken();
             if (token.type === 32 /* TokenType.EOF_TOKEN */ || token.type === 3 /* TokenType.RIGHT_PARENTHESIS_TOKEN */) {
                 return cssFunction;
             }
             this.reconsumeToken(token);
             cssFunction.values.push(this.consumeComponentValue());
         }
-    };
-    Parser.prototype.consumeToken = function () {
-        var token = this._tokens.shift();
-        return typeof token === 'undefined' ? tokenizer_1.EOF_TOKEN : token;
-    };
-    Parser.prototype.reconsumeToken = function (token) {
+    }
+    consumeToken() {
+        const token = this._tokens.shift();
+        return typeof token === 'undefined' ? EOF_TOKEN : token;
+    }
+    reconsumeToken(token) {
         this._tokens.unshift(token);
-    };
-    return Parser;
-}());
-exports.Parser = Parser;
-var isDimensionToken = function (token) { return token.type === 15 /* TokenType.DIMENSION_TOKEN */; };
-exports.isDimensionToken = isDimensionToken;
-var isNumberToken = function (token) { return token.type === 17 /* TokenType.NUMBER_TOKEN */; };
-exports.isNumberToken = isNumberToken;
-var isIdentToken = function (token) { return token.type === 20 /* TokenType.IDENT_TOKEN */; };
-exports.isIdentToken = isIdentToken;
-var isStringToken = function (token) { return token.type === 0 /* TokenType.STRING_TOKEN */; };
-exports.isStringToken = isStringToken;
-var isIdentWithValue = function (token, value) {
-    return (0, exports.isIdentToken)(token) && token.value === value;
-};
-exports.isIdentWithValue = isIdentWithValue;
-var nonWhiteSpace = function (token) { return token.type !== 31 /* TokenType.WHITESPACE_TOKEN */; };
-exports.nonWhiteSpace = nonWhiteSpace;
-var nonFunctionArgSeparator = function (token) {
-    return token.type !== 31 /* TokenType.WHITESPACE_TOKEN */ &&
-        token.type !== 4 /* TokenType.COMMA_TOKEN */ &&
-        token.type !== 6 /* TokenType.DELIM_TOKEN */;
-};
-exports.nonFunctionArgSeparator = nonFunctionArgSeparator;
-var parseFunctionArgs = function (tokens) {
-    var args = [];
-    var arg = [];
-    tokens.forEach(function (token) {
+    }
+}
+export const isDimensionToken = (token) => token.type === 15 /* TokenType.DIMENSION_TOKEN */;
+export const isNumberToken = (token) => token.type === 17 /* TokenType.NUMBER_TOKEN */;
+export const isIdentToken = (token) => token.type === 20 /* TokenType.IDENT_TOKEN */;
+export const isStringToken = (token) => token.type === 0 /* TokenType.STRING_TOKEN */;
+export const isIdentWithValue = (token, value) => isIdentToken(token) && token.value === value;
+export const nonWhiteSpace = (token) => token.type !== 31 /* TokenType.WHITESPACE_TOKEN */;
+export const nonFunctionArgSeparator = (token) => token.type !== 31 /* TokenType.WHITESPACE_TOKEN */ &&
+    token.type !== 4 /* TokenType.COMMA_TOKEN */ &&
+    token.type !== 6 /* TokenType.DELIM_TOKEN */;
+export const parseFunctionArgs = (tokens) => {
+    const args = [];
+    let arg = [];
+    tokens.forEach((token) => {
         if (token.type === 4 /* TokenType.COMMA_TOKEN */) {
             if (arg.length === 0) {
-                throw new Error("Error parsing function args, zero tokens for arg");
+                throw new Error(`Error parsing function args, zero tokens for arg`);
             }
             args.push(arg);
             arg = [];
@@ -136,8 +121,7 @@ var parseFunctionArgs = function (tokens) {
     }
     return args;
 };
-exports.parseFunctionArgs = parseFunctionArgs;
-var isEndingTokenFor = function (token, type) {
+const isEndingTokenFor = (token, type) => {
     if (type === 11 /* TokenType.LEFT_CURLY_BRACKET_TOKEN */ && token.type === 12 /* TokenType.RIGHT_CURLY_BRACKET_TOKEN */) {
         return true;
     }
