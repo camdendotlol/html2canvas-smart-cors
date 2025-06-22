@@ -6,5 +6,5 @@
         "declaration": false,
         "declarationDir": null
     },
-    "include": ["**/*.ts", "webpack.config.js"]
+    "include": ["**/*.ts", "vite.config.js", "karma.ts"]
 }

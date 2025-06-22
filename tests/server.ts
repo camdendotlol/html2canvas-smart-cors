@@ -2,7 +2,6 @@ import cors from 'cors';
 import express from 'express';
 import filenamifyUrl from 'filenamify-url';
 import fs from 'fs';
-// @ts-ignore
 import proxy from 'html2canvas-proxy';
 import {mkdirp} from 'mkdirp';
 import {dirname, resolve} from 'node:path';
@@ -25,13 +24,6 @@ corsApp.use('/', express.static(resolve(__dirname, '.')));
 
 export const screenshotApp = express();
 screenshotApp.use(cors());
-screenshotApp.use((req: express.Request, _res: express.Response, next: express.NextFunction) => {
-    // IE9 doesn't set headers for cross-domain ajax requests
-    if (typeof req.headers['content-type'] === 'undefined') {
-        req.headers['content-type'] = 'application/json';
-    }
-    next();
-});
 screenshotApp.use(
     express.json({
         limit: '15mb',

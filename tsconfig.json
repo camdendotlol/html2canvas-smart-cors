@@ -17,8 +17,8 @@
         "esModuleInterop": true,
         "module": "es2022",
         "moduleResolution": "node",
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
     },
-    "include": ["src", "scripts/**/*.ts", "tests/**/*.ts", "tests/webpack.config.js"],
+    "include": ["src", "scripts/**/*.ts", "tests/**/*.ts", "tests/vite.config.js", "tests/karma.ts"],
     "exclude": ["dist", "build", "node_modules"]
 }

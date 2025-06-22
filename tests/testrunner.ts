@@ -1,12 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {testList, ignoredTests} from '../build/reftests';
-import {default as platform} from 'platform';
+import platform from 'platform';
 import type {ScreenshotRequest} from './types';
 
 const uploadResults = (canvas: HTMLCanvasElement, url: string) => {
     return new Promise<void>((resolve: () => void, reject: (error: string) => void) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const xhr = 'withCredentials' in new XMLHttpRequest() ? new XMLHttpRequest() : new XDomainRequest();
 
@@ -75,7 +73,6 @@ describe('Rendering Tests', () => {
                         throw new Error(`unhandledrejection: ${JSON.stringify(event.reason)}`);
                     });
 
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     const canvas: HTMLCanvasElement = await contentWindow.html2canvas(
                         (contentWindow as unknown as {forceElement: HTMLElement}).forceElement ||

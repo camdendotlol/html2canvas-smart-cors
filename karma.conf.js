@@ -1,29 +1,16 @@
 // Karma configuration
 // Generated on Sat Aug 05 2017 23:42:26 GMT+0800 (Malay Peninsula Standard Time)
 
-const path = require('path');
-const simctl = require('node-simctl');
-const iosSimulator = require('appium-ios-simulator');
+import path from 'node:path';
+import simctl from 'node-simctl';
+import iosSimulator from 'appium-ios-simulator';
+
 const listenAddress = 'localhost';
 const port = 9876;
 
-const log = require('karma/lib/logger').create('launcher:MobileSafari');
-
-module.exports = function (config) {
+export default function (config) {
     // https://github.com/actions/virtual-environments/blob/master/images/macos/macos-10.15-Readme.md
     const launchers = {
-        Safari_IOS_9: {
-            base: 'MobileSafari',
-            name: 'iPhone 5s',
-            platform: 'iOS',
-            sdk: '9.0'
-        },
-        Safari_IOS_10: {
-            base: 'MobileSafari',
-            name: 'iPhone 5s',
-            platform: 'iOS',
-            sdk: '10.0'
-        },
         Safari_IOS_12: {
             base: 'MobileSafari',
             name: 'iPhone 5s',
@@ -54,65 +41,6 @@ module.exports = function (config) {
             platform: 'iOS',
             sdk: '15.2'
         },
-        SauceLabs_IE9: {
-            base: 'SauceLabs',
-            browserName: 'internet explorer',
-            version: '9.0',
-            platform: 'Windows 7'
-        },
-        SauceLabs_IE10: {
-            base: 'SauceLabs',
-            browserName: 'internet explorer',
-            version: '10.0',
-            platform: 'Windows 7'
-        },
-        SauceLabs_IE11: {
-            base: 'SauceLabs',
-            browserName: 'internet explorer',
-            version: '11.0',
-            platform: 'Windows 7'
-        },
-        SauceLabs_Edge18: {
-            base: 'SauceLabs',
-            browserName: 'MicrosoftEdge',
-            version: '18.17763',
-            platform: 'Windows 10'
-        },
-        SauceLabs_Android4: {
-            base: 'SauceLabs',
-            browserName: 'Browser',
-            platform: 'Android',
-            version: '4.4',
-            device: 'Android Emulator'
-        },
-        SauceLabs_iOS10_3: {
-            base: 'SauceLabs',
-            browserName: 'Safari',
-            platform: 'iOS',
-            version: '10.3',
-            device: 'iPhone 7 Plus Simulator'
-        },
-        SauceLabs_iOS9_3: {
-            base: 'SauceLabs',
-            browserName: 'Safari',
-            platform: 'iOS',
-            version: '9.3',
-            device: 'iPhone 6 Plus Simulator'
-        },
-        IE_9: {
-            base: 'IE',
-            'x-ua-compatible': 'IE=EmulateIE9',
-            flags: ['-extoff']
-        },
-        IE_10: {
-            base: 'IE',
-            'x-ua-compatible': 'IE=EmulateIE10',
-            flags: ['-extoff']
-        },
-        IE_11: {
-            base: 'IE',
-            flags: ['-extoff']
-        },
         Safari_Stable: {
             base: 'SafariNative'
         },
@@ -133,9 +61,9 @@ module.exports = function (config) {
                   base: 'Puppeteer',
                   flags: ['--no-sandbox']
               },
-              stable_chrome: {
-                  base: 'ChromeHeadless'
-              },
+              //   stable_chrome: {
+              //       base: 'ChromeHeadless'
+              //   },
               stable_firefox: {
                   base: 'Firefox'
               }
@@ -283,4 +211,4 @@ module.exports = function (config) {
 
         browserNoActivityTimeout: 1200000
     });
-};
+}

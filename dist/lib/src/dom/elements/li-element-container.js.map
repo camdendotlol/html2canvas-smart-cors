@@ -1,1 +1,0 @@
-{"version":3,"file":"li-element-container.js","sourceRoot":"","sources":["../../../../../src/dom/elements/li-element-container.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,gBAAgB,EAAC,MAAM,sBAAsB,CAAC;AAEtD,MAAM,OAAO,kBAAmB,SAAQ,gBAAgB;IAC3C,KAAK,CAAS;IAEvB,YAAY,OAAgB,EAAE,OAAsB;QAChD,KAAK,CAAC,OAAO,EAAE,OAAO,CAAC,CAAC;QACxB,IAAI,CAAC,KAAK,GAAG,OAAO,CAAC,KAAK,CAAC;IAC/B,CAAC;CACJ"}

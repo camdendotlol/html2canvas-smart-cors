@@ -1,6 +1,6 @@
 # html2canvas
 
-This project is a fork of [niklasvh/html2canvas](https://github.com/niklasvh/html2canvas).
+This project is a fork of [html2canvas/html2canvas](https://github.com/html2canvas/html2canvas), which is a fork of [niklasvh/html2canvas](https://github.com/niklasvh/html2canvas).
 
 [Homepage](https://html2canvas.github.io/html2canvas) | [Downloads](https://github.com/html2canvas/html2canvas/releases) | [Questions](https://github.com/html2canvas/html2canvas/discussions/categories/q-a)
 
