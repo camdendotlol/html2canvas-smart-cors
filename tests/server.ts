@@ -3,30 +3,27 @@ import express from 'express';
 import filenamifyUrl from 'filenamify-url';
 import fs from 'fs';
 import proxy from 'html2canvas-proxy';
-import mkdirp from 'mkdirp';
-import path from 'path';
+import {mkdirp} from 'mkdirp';
+import {dirname, resolve} from 'node:path';
 import serveIndex from 'serve-index';
+import {fileURLToPath} from 'node:url';
 import yargs from 'yargs';
 import {ScreenshotRequest} from './types';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 export const app = express();
-app.use('/', serveIndex(path.resolve(__dirname, '../'), {icons: true}));
-app.use([/^\/src($|\/)/, '/'], express.static(path.resolve(__dirname, '../')));
+app.use('/', serveIndex(resolve(__dirname, '../'), {icons: true}));
+app.use([/^\/src($|\/)/, '/'], express.static(resolve(__dirname, '../')));
 
 export const corsApp = express();
 corsApp.use('/proxy', proxy());
-corsApp.use('/cors', cors(), express.static(path.resolve(__dirname, '../')));
-corsApp.use('/', express.static(path.resolve(__dirname, '.')));
+corsApp.use('/cors', cors(), express.static(resolve(__dirname, '../')));
+corsApp.use('/', express.static(resolve(__dirname, '.')));
 
 export const screenshotApp = express();
 screenshotApp.use(cors());
-screenshotApp.use((req: express.Request, _res: express.Response, next: express.NextFunction) => {
-    // IE9 doesn't set headers for cross-domain ajax requests
-    if (typeof req.headers['content-type'] === 'undefined') {
-        req.headers['content-type'] = 'application/json';
-    }
-    next();
-});
 screenshotApp.use(
     express.json({
         limit: '15mb',
@@ -38,15 +35,15 @@ const prefix = 'data:image/png;base64,';
 const screenshotFolder = '../tmp/reftests';
 const metadataFolder = '../tmp/reftests/metadata';
 
-mkdirp.sync(path.resolve(__dirname, screenshotFolder));
-mkdirp.sync(path.resolve(__dirname, metadataFolder));
+mkdirp.sync(resolve(__dirname, screenshotFolder));
+mkdirp.sync(resolve(__dirname, metadataFolder));
 
 const writeScreenshot = (buffer: Buffer, body: ScreenshotRequest) => {
     const filename = `${filenamifyUrl(body.test.replace(/^\/tests\/reftests\//, '').replace(/\.html$/, ''), {
         replacement: '-'
     })}!${[process.env.TARGET_BROWSER, body.platform.name, body.platform.version].join('-')}`;
 
-    fs.writeFileSync(path.resolve(__dirname, screenshotFolder, `${filename}.png`), buffer);
+    fs.writeFileSync(resolve(__dirname, screenshotFolder, `${filename}.png`), buffer);
     return filename;
 };
 
@@ -60,7 +57,7 @@ screenshotApp.post(
         const buffer = Buffer.from(req.body.screenshot.substring(prefix.length), 'base64');
         const filename = writeScreenshot(buffer, req.body);
         fs.writeFileSync(
-            path.resolve(__dirname, metadataFolder, `${filename}.json`),
+            resolve(__dirname, metadataFolder, `${filename}.json`),
             JSON.stringify({
                 windowWidth: req.body.windowWidth,
                 windowHeight: req.body.windowHeight,

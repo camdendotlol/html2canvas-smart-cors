@@ -19,5 +19,4 @@ tmp/
 jest.config.js
 karma.conf.js
 karma.js
-webpack.config.js
 tsconfig.json

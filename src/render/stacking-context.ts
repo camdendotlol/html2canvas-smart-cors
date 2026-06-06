@@ -79,7 +79,10 @@ export class ElementPaint {
                     const paddingBox = calculatePaddingBoxPath(parent.curves);
                     if (!equalPath(borderBox, paddingBox)) {
                         effects.unshift(
-                            new ClipEffect(paddingBox, EffectTarget.BACKGROUND_BORDERS | EffectTarget.CONTENT)
+                            new ClipEffect(
+                                paddingBox,
+                                EffectTarget.BACKGROUND_BORDERS | EffectTarget.CONTENT | EffectTarget.SHADOW
+                            )
                         );
                     }
                 }

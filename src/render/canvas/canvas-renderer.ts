@@ -756,6 +756,7 @@ export class CanvasRenderer extends Renderer {
 
             this.ctx.restore();
 
+            this.applyEffects(paint.getEffects(EffectTarget.SHADOW));
             styles.boxShadow
                 .slice(0)
                 .reverse()
@@ -790,6 +791,7 @@ export class CanvasRenderer extends Renderer {
                     this.ctx.fill();
                     this.ctx.restore();
                 });
+            this.applyEffects(paint.getEffects(EffectTarget.BACKGROUND_BORDERS));
         }
 
         let side = 0;

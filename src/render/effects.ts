@@ -9,7 +9,8 @@ export const enum EffectType {
 
 export const enum EffectTarget {
     BACKGROUND_BORDERS = 1 << 1,
-    CONTENT = 1 << 2
+    CONTENT = 1 << 2,
+    SHADOW = 1 << 3
 }
 
 export interface IElementEffect {
@@ -19,7 +20,7 @@ export interface IElementEffect {
 
 export class TransformEffect implements IElementEffect {
     readonly type: EffectType = EffectType.TRANSFORM;
-    readonly target: number = EffectTarget.BACKGROUND_BORDERS | EffectTarget.CONTENT;
+    readonly target: number = EffectTarget.BACKGROUND_BORDERS | EffectTarget.CONTENT | EffectTarget.SHADOW;
 
     constructor(
         readonly offsetX: number,
@@ -39,7 +40,7 @@ export class ClipEffect implements IElementEffect {
 
 export class OpacityEffect implements IElementEffect {
     readonly type: EffectType = EffectType.OPACITY;
-    readonly target: number = EffectTarget.BACKGROUND_BORDERS | EffectTarget.CONTENT;
+    readonly target: number = EffectTarget.BACKGROUND_BORDERS | EffectTarget.CONTENT | EffectTarget.SHADOW;
 
     constructor(readonly opacity: number) {}
 }
