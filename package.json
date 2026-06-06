@@ -6,6 +6,15 @@
   "module": "dist/html2canvas.esm.js",
   "types": "dist/types/src/index.d.ts",
   "browser": "dist/html2canvas.js",
+  "exports": {
+    ".": {
+      "types": "./dist/types/src/index.d.ts",
+      "import": "./dist/html2canvas.esm.js",
+      "require": "./dist/html2canvas.min.js",
+      "browser": "./dist/html2canvas.esm.js",
+      "default": "./dist/html2canvas.esm.js"
+    }
+  },
   "version": "1.6.3",
   "keywords": [
     "typescript",
